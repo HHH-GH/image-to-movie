@@ -1,1 +1,6 @@
-# not ignoring anything right now
+# ignore the contents of these folders
+output/
+source/
+
+# ignore a customised .env file
+.env

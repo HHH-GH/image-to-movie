@@ -12,8 +12,8 @@ Just getting started, really. (2022/09/11)
 
 - Copy all ~2,000 of Little H’s selfies from my phone
 - Use Windows File Browser to sort them by "Date Taken"
-- Rename them all like `0001.JPG`, `0002.jpg` because FFmpeg/ImageMagick probably won’t like files with spaces, and I’m not sure if Bash scripts can use EXIF metadata to sort by "Date Taken". (If this can be scripted there will be notes/commands in `helper-scripts.txt`)
-- Copy all the photos into a folder named `src` or suchlike.
+- Rename them all like `0001.JPG`, `0002.jpg` because FFmpeg/ImageMagick probably won’t like files with spaces, and I’m not sure if Bash scripts can use EXIF metadata to sort by "Date Taken". (If this can be scripted there will be notes/commands in `helper-scripts-copy-paste.txt`)
+- Copy all the photos into a folder named `source` or suchlike.
 - Run the script on the photos in that folder, resulting in an MP4 video saved in a folder named `output` or suchlike
 
 ## What is the eventual result
@@ -32,7 +32,7 @@ Just getting started, really. (2022/09/11)
 ## Program flow
 - Read in the `.env` variables.
 - Check that ImageMagick and FFmpeg are available.
-- Loop through all the images in `src`. [1]
+- Loop through all the images in `source`. [1]
 - Resize and position each of .them in the square canvas of the video [1]
 - Add into the eventual movie.
 
@@ -53,8 +53,9 @@ For each of the images, decide
 - ImageMagick (resizing photos, maybe some colour processing)
 - FFmpeg (combining the photos into a movie)
 - Some sort of Bash shell
+- Remembers to `chmod+x` on `make-movie-from-images.sh`
 
 ## Next steps
-- Set up the `src` and `output` folders and `.gitignore` their contents.
+- Set up the `source` and `output` folders and `.gitignore` their contents.
 - Write a skeleton for the code.
 - Start coding it up.
