@@ -56,6 +56,4 @@ For each of the images, decide
 - Remembers to `chmod+x` on `make-movie-from-images.sh`
 
 ## Next steps
-- Set up the `source` and `output` folders and `.gitignore` their contents.
-- Write a skeleton for the code.
-- Start coding it up.
+- Start coding it up, starting with program defaults.
