@@ -25,11 +25,12 @@ Just getting started, really. (2022/09/11)
 ## How to
 - To have landscape- and portrait-oriented photos in the same movie, we’ll make it a square movie with the photos centered horizontally and vertically, with a black background/letterboxing.
 - It’s going be a Bash script because I’ve got some Bash scripts that already do something similar.
-- Default variables like frames per second, video width/height, etc, should be read in from a `.env` file.
+- ~~Default variables like frames per second, video width/height, etc, should be read in from a `.env` file.~~
+- Default variables like frames per second, video width/height, etc, are set in `make-movie-from-images.sh`; an `.env` file is available to customise the paths to ImageMagick/FFmpeg exe files should they not be in the system `PATH` or default location.
 - Run the script and pass in extra variables to override defaults if desired e.g. `./make-movie-from-images fps=1 vid_w=720 vid_h=720` or write a little menu that allows keyboard input to accept or change the default values. (So a regular landscape-oriented video could be produced from images that are all landscape-oriented)
 
 ## Program flow
-- Read in the `.env` variables, overwrite defaults if needed.
+- Read in the `.env` variables.
 - Check that ImageMagick and FFmpeg are available.
 - Loop through all the images in `src`. [1]
 - Resize and position each of .them in the square canvas of the video [1]
