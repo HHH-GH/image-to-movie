@@ -6,7 +6,7 @@ The main reason for writing this is to combine all ~2,000 of Little H’s selfie
 
 ## What is the status
 
-Just getting started, really. (2022/09/11)
+Just getting started, really. (2022/09/13)
 
 ## What is the plan
 
@@ -48,6 +48,7 @@ For each of the images, decide
 - Cropping might be helpful to put more focus on the center of the each image.
 - Cropping might be useful to make a 4:3 aspect ratio video from 16:9 aspect ratio photos (or vice-versa)
 - Not essential to the initial version
+- Might be used when the image width/height isn't divisible by 2, as I guess the `x_pos` and `y_pos` will need to be whole numbers
 
 ## Dependencies / Requirements
 - ImageMagick (resizing photos, maybe some colour processing)
