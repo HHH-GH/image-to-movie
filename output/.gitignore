@@ -1,0 +1,8 @@
+# This folder is tracked, but the files inside are not tracked
+# https://stackoverflow.com/questions/7229885/what-are-the-differences-between-gitignore-and-gitkeep
+
+# Ignore everything
+* 
+
+# except the .gitignore
+!.gitignore
