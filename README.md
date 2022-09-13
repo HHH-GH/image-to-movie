@@ -54,7 +54,7 @@ For each of the images, decide
 - ImageMagick (resizing photos, maybe some colour processing)
 - FFmpeg (combining the photos into a movie)
 - Some sort of Bash shell
-- Remembers to `chmod+x` on `make-movie-from-images.sh`
+- Remember to `chmod+x` on `make-movie-from-images.sh`
 
 ## Next steps
 - Start coding it up, starting with program defaults.
