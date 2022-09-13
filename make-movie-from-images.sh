@@ -36,3 +36,9 @@ command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg com
 
 
 # 4. The actual program TO-DO
+# collecting some resources 
+# Safely Handling pathnames and filenames in shell https://dwheeler.com/essays/filenames-in-shell.html
+# esp prepending ./ and the for loops
+#
+# Prevent directory traversal in bash script https://stackoverflow.com/questions/62576599/prevent-directory-traversal-vulnerability-in-bash-script
+# when a directory name could be passed in
