@@ -29,10 +29,16 @@ fi
 command -v "$IM_CONVERT"  >/dev/null 2>&1 || { echo >&2 "ERROR: ImageMagick convert command is not available. Is ImageMagick installed properly? Is the .env file set correctly?"; exit 1; }
 command -v "$IM_IDENTIFY"  >/dev/null 2>&1 || { echo >&2 "ERROR: ImageMagick identify command is not available. Is ImageMagick installed properly? Is the .env file set correctly?"; exit 1; }
 command -v "$IM_MAJICK"  >/dev/null 2>&1 || { echo >&2 "ERROR: ImageMagick majick command is not available. Is ImageMagick installed properly? Is the .env file set correctly?"; exit 1; }
-command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg command is not available. Is ImageMagick installed properly? Is the .env file set correctly?"; exit 1; }
+command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg command is not available. Is FFmpeg installed properly? Is the .env file set correctly?"; exit 1; }
 
 # 3. Set program defaults TO-DO
 
 
 
 # 4. The actual program TO-DO
+# collecting some resources 
+# Safely Handling pathnames and filenames in shell https://dwheeler.com/essays/filenames-in-shell.html
+# esp prepending ./ and the for loops
+#
+# Prevent directory traversal in bash script https://stackoverflow.com/questions/62576599/prevent-directory-traversal-vulnerability-in-bash-script
+# when a directory name could be passed in
