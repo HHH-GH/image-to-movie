@@ -1,2 +1,33 @@
-# Ignore a customised .env file
-.env
+# This gitignore is flipped so we ignore everything except 
+# the specific files used by the program. This means we can
+# have customised source and output folders without the 
+# files in those folders being added to the actual repo.
+# i.e. the eventual movie could be saved in a timestamped
+# folder, we could process a subset of files in a folder
+# named 'test' etc
+
+# Ignore everything ...
+*
+
+# ... Except these files in the repository root
+# The gitignore
+!/.gitignore
+
+# The default source and output folders
+!/source/
+!/output/
+
+# The sample.env file
+!/.env.sample
+
+# The actual program
+!/make-movie-from-images.sh
+
+# The helper scripts
+!/helper-scripts-copy-paste.txt
+
+# The README and LICENSE
+!/README.md
+!/LICENSE.md
+
+# FIN
