@@ -17,6 +17,9 @@
 !/source/
 !/output/
 
+# The test folder and its contents
+!/test/
+
 # The sample.env file
 !/.env.sample
 

@@ -1,0 +1,7 @@
+# This is a placeholder until I add the eight testing images
+
+# Ignore everything
+* 
+
+# except the .gitignore
+!.gitignore
