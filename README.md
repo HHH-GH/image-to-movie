@@ -57,11 +57,8 @@ For each of the images, decide
 - Remember to `chmod+x` on `make-movie-from-images.sh`
 
 ## Tests
-- There’s a folder called 'test' and inside it are eight images in a variety of sizes and orientations, each with a number.
+- There’s a folder called 'test' and inside it are eight images in a variety of sizes and orientations, each with a number. (These were force-added)
 - Use those images to test everything works. If it all works you’ll get a short movie with all eight images.
-
-**Tests TO-DO**
-- Make the eight images
 
 ## Next steps
 - Start coding it up, starting with program defaults.
