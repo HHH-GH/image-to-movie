@@ -12,7 +12,7 @@ Just getting started, really. (2022/09/13)
 
 - Copy all ~2,000 of Little H’s selfies from my phone
 - Use Windows File Browser to sort them by "Date Taken"
-- Rename them all like `0001.JPG`, `0002.jpg` because FFmpeg/ImageMagick probably won’t like files with spaces, and I’m not sure if Bash scripts can use EXIF metadata to sort by "Date Taken". (If this can be scripted there will be notes/commands in `helper-scripts-copy-paste.md`)
+- Rename them all like `0001.JPG`, `0002.jpg` because FFmpeg/ImageMagick probably won’t like files with spaces, I don’t want to add padding 0s for ordering if there’s 1,000 files (`File (1).jpg`, `File 10.jpg`, `File (11).jpg`,`File (1000).jpg` etc would all get done before `File (2).jpg`), and I’m not sure if Bash scripts can use EXIF metadata to sort by "Date Taken". (If this can be scripted there will be notes/commands in `helper-scripts-copy-paste.md`)
 - Copy all the photos into a folder named `source` or suchlike.
 - Run the script on the photos in that folder, resulting in an MP4 video saved in a folder named `output` or suchlike
 
@@ -33,7 +33,7 @@ Just getting started, really. (2022/09/13)
 - Read in the `.env` variables.
 - Check that ImageMagick and FFmpeg are available.
 - Loop through all the images in `source`. [1]
-- Resize and position each of .them in the square canvas of the video [1]
+- Resize and position each of them in the square canvas of the video [1]
 - Add into the eventual movie.
 
 ### [1]
