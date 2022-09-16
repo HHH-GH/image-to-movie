@@ -38,7 +38,10 @@ command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg com
 # 4. The actual program TO-DO
 # collecting some resources 
 # Safely Handling pathnames and filenames in shell https://dwheeler.com/essays/filenames-in-shell.html
-# esp prepending ./ and the for loops
+# esp prepending ./ and the for loops, and stripping/prepending something when a path/filename starts with -
 #
 # Prevent directory traversal in bash script https://stackoverflow.com/questions/62576599/prevent-directory-traversal-vulnerability-in-bash-script
 # when a directory name could be passed in
+# How about making it so the output directory is fixed, and the movies are output with timestamp and fps and size tags so they're unique e.g. 202209161139_8fps_720w_720h.mp4
+# Then we don't have to worry that the script might output files into a random/bad location on the computer
+# Then it doesn't matter if the source directory is random/bad, because the script will only get jpgs
