@@ -60,5 +60,17 @@ For each of the images, decide
 - There’s a folder called 'test' and inside it are eight images in a variety of sizes and orientations, each with a number. (These were force-added)
 - Use those images to test everything works. If it all works you’ll get a short movie with all eight images.
 
+### Test image sizes
+1024x576—16:9 aspect ratio
+1024x768—4:3 aspect ratio
+400x400—1:1 aspect ratio, smaller than the canvas
+800x700—strange size
+768x1024—3:4 aspect ratio
+576x1024—9:16 aspect ratio
+800x700—strange size
+1024x1024—1:1 aspect ratio, larger than the canvas
+
+
+
 ## Next steps
 - Start coding it up, starting with program defaults.
