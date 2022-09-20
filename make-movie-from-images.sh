@@ -92,27 +92,27 @@ function main(){
 		
 		# Call the function that matches the input menu choice
 		
-		if [[ "$menu_input" == "m" ]]; then
+		if [[ "${menu_input}" == "m" ]]; then
 		
 			echo -e "\n\tMaking movie from images according to defaults"
 			
-		elif [[ "$menu_input" == "s" ]]; then
+		elif [[ "${menu_input}" == "s" ]]; then
 		
 			echo -e "\n\tShowing default settings"
 			
-		elif [[ "$menu_input" == "o" ]]; then
+		elif [[ "${menu_input}" == "o" ]]; then
 		
 			echo -e "\n\tMaking movie from images with options to override defaults"
 		
-		elif [[ "$menu_input" == "v" ]]; then
+		elif [[ "${menu_input}" == "v" ]]; then
 		
 			echo -e "\n\tShowing which versions of ImageMagick and FFmpeg are being used"
 		
-		elif [[ "$menu_input" == "t" ]]; then
+		elif [[ "${menu_input}" == "t" ]]; then
 		
 			echo -e "\n\tMaking a test movie with the test images"
 			
-		elif [[ "$menu_input" == "q" ]]; then
+		elif [[ "${menu_input}" == "q" ]]; then
 		
 			echo -e "\n\tQUITTING"
 			break
