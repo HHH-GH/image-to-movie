@@ -5,6 +5,7 @@
 # 3. Set the program defaults
 # 4. The actual program
 
+
 # 1. Load the .env file
 # https://gist.github.com/mihow/9c7f559807069a03e302605691f85572
 if [ ! -f .env ]
@@ -20,6 +21,7 @@ else
 	source .env
 	set +o allexport
 fi
+
 
 # 2. Check that the required ImageMagick and FFmpeg commands are available and set from the .env
 # "$IM_CONVERT" = convert in ImageMagick
@@ -49,3 +51,22 @@ command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg com
 #
 # Style guide for shell scripts
 # https://google.github.io/styleguide/shellguide.html#s7-naming-conventions
+
+
+# Print the menu options for the program
+function print_program_menu(){
+
+	local menu_options
+
+	menu_options="
+Choose an option and press Enter:
+m  Make movie from images according to defaults
+s  Show default settings
+o  Make movie from images with options to override defaults
+v  Show which versions of ImageMagick and FFmpeg are being used
+q  Quit
+"
+
+	echo "$menu_options"
+	
+}
