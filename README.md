@@ -87,6 +87,20 @@ For each of the images, decide
 700x800—strange size  
 1024x1024—1:1 aspect ratio, larger than the canvas  
 
+## Resources to use while making it
+
+### Safely Handling pathnames and filenames in shell https://dwheeler.com/essays/filenames-in-shell.html  
+Especially prepending ./ and the for loops, and stripping/prepending something when a path/filename starts with `-`  
+
+### Prevent directory traversal in bash script https://stackoverflow.com/questions/62576599/prevent-directory-traversal-vulnerability-in-bash-script  
+When a directory name could be passed in to the script
+
+**Idea:** How about making it so the output directory is fixed, and the movies are output with timestamp and fps and size tags so they're unique e.g. `202209161139_8fps_720w_720h.mp4`. Then we don't have to worry that the script might output files into a random/bad location on the computer. Then it doesn't matter if the source directory is random/bad either, because the script will only get jpgs (?)
+
+### Style guide for shell scripts
+https://google.github.io/styleguide/shellguide.html#s7-naming-conventions  
+
+
 ## Next steps
 
 - Continue coding it up, beginning with program defaults and the key functions.
