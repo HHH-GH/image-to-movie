@@ -31,6 +31,7 @@ The basic skeleton of the program flow is complete. (2022/09/20)
 - To have landscape- and portrait-oriented photos in the same movie, we’ll make it a square movie with the photos centered horizontally and vertically, with a black background/letterboxing.
 - It’s going be a Bash script because I’ve got some Bash scripts that already do something similar.
 - Default variables like frames per second, video width/height, etc, are set in `make-movie-from-images.sh`; an `.env` file is available to customise the paths to ImageMagick/FFmpeg exe files should they not be in the system `PATH` or default location.
+- Maybe offer the option to have an env/config file for default variables? Then they could be customised per install, and the script could still be synced/updated from GitHub if there are updates.
 - Run the script and use a little menu that allows keyboard input to tell it what to do. Options: process the images using the default settings; show the default settings; process the images after allowing a change to any of the default settings (so a regular landscape-oriented video could be produced from images that are all landscape-oriented by setting the output to be 720 wide and 405 tall); show the software versions; Quit. 
 
 ## Main program flow
@@ -99,6 +100,13 @@ When a directory name could be passed in to the script
 
 ### Style guide for shell scripts
 https://google.github.io/styleguide/shellguide.html#s7-naming-conventions  
+
+### Time-lapse videos
+[Build a Raspberry Pi time-lapse rig](https://reprage.com/post/how-to-build-a-raspberry-pi-time-lapse-rig)  
+[Creating a time-lapse video ... with ffmpeg](https://medium.com/@sekhar.rahul/creating-a-time-lapse-video-on-the-command-line-with-ffmpeg-1a7566caf877)
+
+### Random
+- https://www.cyberciti.biz/faq/linux-unix-formatting-dates-for-display/
 
 
 ## Next steps
