@@ -69,6 +69,7 @@ function print_program_menu(){
 	s  Show default settings
 	o  Make movie from images with options to override defaults
 	v  Show which versions of ImageMagick and FFmpeg are being used
+	t  Make a test movie with the test images
 	q  Quit
 
 "
@@ -106,6 +107,10 @@ function main(){
 		elif [[ "$menu_input" == "v" ]]; then
 		
 			echo -e "\n\tShowing which versions of ImageMagick and FFmpeg are being used"
+		
+		elif [[ "$menu_input" == "t" ]]; then
+		
+			echo -e "\n\tMaking a test movie with the test images"
 			
 		elif [[ "$menu_input" == "q" ]]; then
 		
