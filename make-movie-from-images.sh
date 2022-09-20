@@ -36,7 +36,15 @@ command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg com
 
 # 3. Set program defaults TO-DO
 
+# Folder locations
+readonly IMG_SOURCE_DIR='./source'
+readonly IMG_OUTPUT_DIR='./output'
+readonly IMG_SOURCE_TEST_DIR='./test'
 
+# Output settings
+readonly VID_OUTPUT_WIDTH='720' 
+readonly VID_OUTPUT_HEIGHT='720'
+readonly VID_OUTPUT_FPS='8'
 
 # 4. The actual program TO-DO
 
