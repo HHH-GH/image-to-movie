@@ -67,7 +67,7 @@ For each of the images, decide
 800x700—strange size  
 768x1024—3:4 aspect ratio  
 576x1024—9:16 aspect ratio  
-800x700—strange size  
+700x800—strange size  
 1024x1024—1:1 aspect ratio, larger than the canvas  
 
 
