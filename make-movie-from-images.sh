@@ -59,14 +59,32 @@ function print_program_menu(){
 	local menu_options
 
 	menu_options="
-Choose an option and press Enter:
-m  Make movie from images according to defaults
-s  Show default settings
-o  Make movie from images with options to override defaults
-v  Show which versions of ImageMagick and FFmpeg are being used
-q  Quit
+	
+	Make movie from images
+	~~~~~~~~~~~~~~~~~~~~~~
+	
+	Choose an option and press Enter:
+	
+	m  Make movie from images according to defaults
+	s  Show default settings
+	o  Make movie from images with options to override defaults
+	v  Show which versions of ImageMagick and FFmpeg are being used
+	q  Quit
 "
 
 	echo "$menu_options"
 	
 }
+
+# The program functions are wrapped in a main function
+function main(){
+	
+	# Print out the program menu
+	print_program_menu
+	exit
+	# Get the menu input
+	#read menuInput
+}
+
+# Run the program
+main
