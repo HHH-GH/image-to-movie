@@ -70,6 +70,7 @@ function print_program_menu(){
 	o  Make movie from images with options to override defaults
 	v  Show which versions of ImageMagick and FFmpeg are being used
 	q  Quit
+
 "
 
 	echo "$menu_options"
@@ -85,10 +86,33 @@ function main(){
 		# Print out the program menu
 		print_program_menu
 
-		# Get the menu input
+		# Get the input
 		read menu_input
 		
-		echo "$menu_input"
+		# Call the function that matches the input menu choice
+		
+		if [[ "$menu_input" == "m" ]]; then
+		
+			echo -e "\n\tMaking movie from images according to defaults"
+			
+		elif [[ "$menu_input" == "s" ]]; then
+		
+			echo -e "\n\tShowing default settings"
+			
+		elif [[ "$menu_input" == "o" ]]; then
+		
+			echo -e "\n\tMaking movie from images with options to override defaults"
+		
+		elif [[ "$menu_input" == "v" ]]; then
+		
+			echo -e "\n\tShowing which versions of ImageMagick and FFmpeg are being used"
+			
+		elif [[ "$menu_input" == "q" ]]; then
+		
+			echo -e "\n\tQUITTING"
+			break
+		
+		fi
 	
 	done
 }
