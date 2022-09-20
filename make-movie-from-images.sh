@@ -34,7 +34,7 @@ command -v "$IM_IDENTIFY"  >/dev/null 2>&1 || { echo >&2 "ERROR: ImageMagick ide
 command -v "$IM_MAJICK"  >/dev/null 2>&1 || { echo >&2 "ERROR: ImageMagick majick command is not available. Is ImageMagick installed properly? Is the .env file set correctly?"; exit 1; }
 command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg command is not available. Is FFmpeg installed properly? Is the .env file set correctly?"; exit 1; }
 
-# 3. Set program defaults TO-DO
+# 3. Set program defaults
 
 # Folder locations
 readonly IMG_SOURCE_DIR='./source'
@@ -46,7 +46,7 @@ readonly VID_OUTPUT_WIDTH='720'
 readonly VID_OUTPUT_HEIGHT='720'
 readonly VID_OUTPUT_FPS='8'
 
-# 4. The actual program TO-DO
+# 4. The actual program TODO(HHH-GH)
 
 # Print the menu options for the program
 function print_program_menu(){
