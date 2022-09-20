@@ -77,7 +77,7 @@ function print_program_menu(){
 	
 }
 
-# The program functions are wrapped in a main function
+# The workings of the program are wrapped in a main function
 function main(){
 	
 	# Use a while loop to read menu input and call functions based on the input
