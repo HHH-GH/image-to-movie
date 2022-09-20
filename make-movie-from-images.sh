@@ -79,11 +79,18 @@ function print_program_menu(){
 # The program functions are wrapped in a main function
 function main(){
 	
-	# Print out the program menu
-	print_program_menu
-	exit
-	# Get the menu input
-	#read menuInput
+	# Use a while loop to read menu input and call functions based on the input
+	while true; do
+	
+		# Print out the program menu
+		print_program_menu
+
+		# Get the menu input
+		read menu_input
+		
+		echo "$menu_input"
+	
+	done
 }
 
 # Run the program
