@@ -1,3 +1,4 @@
+#!/bin/bash
 # make-movie-from-images
 # 1. Load the .env file
 # 2. Check the ImageMagick and FFmpeg commands are available
