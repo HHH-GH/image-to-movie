@@ -46,9 +46,17 @@ readonly VID_OUTPUT_WIDTH='720'
 readonly VID_OUTPUT_HEIGHT='720'
 readonly VID_OUTPUT_FPS='8'
 
-# 4. The actual program TODO(HHH-GH)
+# 4. The actual program TODO(HHH-GH): all of it (printing defaults & versions, quit and clean up, image and movie processing)
 
-# Print the menu options for the program
+#######################################
+# Print the menu options.
+# Globals:
+# 	None
+# Arguments:
+#	None
+# Outputs:
+#	Writes menu to screen
+#######################################
 function print_program_menu(){
 
 	local menu_options
@@ -73,6 +81,59 @@ function print_program_menu(){
 	
 }
 
+
+#######################################
+# Show default settings.
+# Globals:
+# 	IMG_SOURCE_DIR
+#	IMG_OUTPUT_DIR
+#	IMG_SOURCE_TEST_DIR
+#	VID_OUTPUT_WIDTH 
+#	VID_OUTPUT_HEIGHT
+#	VID_OUTPUT_FPS
+# Arguments:
+#	None
+# Outputs:
+#	Writes default settings to screen
+#######################################
+function print_default_settings(){
+	# TODO(HHH-GH): actually print them
+	echo -e "\n\tShowing default settings"
+}
+
+
+#######################################
+# Show versions of ImageMagick and 
+# FFmpeg.
+# Globals:
+#	IM_MAGICK
+# 	FF_FFMPEG
+# Arguments:
+#	None
+# Outputs:
+#	Results of version check on the
+#	two executables
+#######################################
+function print_program_versions(){
+	# TODO(HHH-GH): actually print them
+	echo -e "\n\tShowing which versions of ImageMagick and FFmpeg are being used"
+}
+
+
+#######################################
+# Quit the program
+# Globals:
+#	IM_MAGICK
+# 	FF_FFMPEG
+# Arguments:
+#	None
+#######################################
+function quit_program(){
+	# TODO(HHH-GH): unset the constants and program default variables
+	echo -e "\n\tQUITTING"
+}
+
+
 # The workings of the program are wrapped in a main function
 function main(){
 	
@@ -92,8 +153,9 @@ function main(){
 			echo -e "\n\tMaking movie from images according to defaults"
 			
 		elif [[ "${menu_input}" == "s" ]]; then
-		
-			echo -e "\n\tShowing default settings"
+			
+			# Show the default settings
+			print_default_settings
 			
 		elif [[ "${menu_input}" == "o" ]]; then
 		
@@ -101,17 +163,18 @@ function main(){
 		
 		elif [[ "${menu_input}" == "v" ]]; then
 		
-			echo -e "\n\tShowing which versions of ImageMagick and FFmpeg are being used"
+			# Show the versions of ImageMagick and FFmpeg that are installed
+			print_program_versions
 		
 		elif [[ "${menu_input}" == "t" ]]; then
 		
 			echo -e "\n\tMaking a test movie with the test images"
 			
 		elif [[ "${menu_input}" == "q" ]]; then
-		
-			echo -e "\n\tQUITTING"
+			
+			# Quit program
+			quit_program
 			break
-		
 		fi
 	
 	done
