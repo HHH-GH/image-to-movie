@@ -123,8 +123,19 @@ function print_default_settings(){
 #	two executables
 #######################################
 function print_program_versions(){
-	# TODO(HHH-GH): actually print them
-	echo -e "\n\tShowing which versions of ImageMagick and FFmpeg are being used"
+	
+	echo -e "\n\tImageMagick and FFmpeg versions"
+	echo -e "\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+	# ImageMagick version
+	echo -en "\tImageMagick version: "
+	"${IM_MAJICK}" -version | sed -n "s/Version: ImageMagick \([-0-9.]*\).*/\1/p;"
+	
+	# FFmpeg version
+	# -n means echo without trailing newline
+	echo -en "\tFFmpeg version: "
+	"${FF_FFMPEG}" -version | sed -n "s/ffmpeg version \([-0-9.]*\).*/\1/p;"
+	
+	echo -e "\n"
 }
 
 
