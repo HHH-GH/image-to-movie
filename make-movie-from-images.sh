@@ -39,7 +39,7 @@ command -v "$FF_FFMPEG"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg com
 # Folder locations
 readonly IMG_SOURCE_DIR='./source'
 readonly IMG_OUTPUT_DIR='./output'
-readonly IMG_SOURCE_TEST_DIR='./test'
+readonly IMG_TEST_SOURCE_DIR='./test'
 
 # Output settings
 readonly VID_OUTPUT_WIDTH='720' 
@@ -87,7 +87,7 @@ function print_program_menu(){
 # Globals:
 # 	IMG_SOURCE_DIR
 #	IMG_OUTPUT_DIR
-#	IMG_SOURCE_TEST_DIR
+#	IMG_TEST_SOURCE_DIR
 #	VID_OUTPUT_WIDTH 
 #	VID_OUTPUT_HEIGHT
 #	VID_OUTPUT_FPS
@@ -97,8 +97,16 @@ function print_program_menu(){
 #	Writes default settings to screen
 #######################################
 function print_default_settings(){
-	# TODO(HHH-GH): actually print them
-	echo -e "\n\tShowing default settings"
+	
+	echo -e "\n\tProgram default settings"
+	echo -e "\t~~~~~~~~~~~~~~~~~~~~~~~~\n"
+	echo -e "\tImages source directory: ........ '${IMG_SOURCE_DIR}'"
+	echo -e "\tMovie output directory: ......... '${IMG_OUTPUT_DIR}'"
+	echo -e "\tImages test source directory: ... '${IMG_TEST_SOURCE_DIR}'"
+	echo -e "\tMovie output width: .............. '${VID_OUTPUT_WIDTH}'"
+	echo -e "\tMovie output height: ............. '${VID_OUTPUT_HEIGHT}'"
+	echo -e "\tMovie output frames per second: .. '${VID_OUTPUT_FPS}'\n"
+	
 }
 
 
