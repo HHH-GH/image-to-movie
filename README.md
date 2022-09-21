@@ -6,7 +6,7 @@ The main reason for writing this is to combine all ~2,000 of Little H’s selfie
 
 ## What is the status
 
-The basic skeleton of the program flow is complete. (2022/09/20)
+The basic skeleton of the program flow is complete. Now working on the program functions (2022/09/21)
 
 ## What is the plan
 
@@ -101,14 +101,18 @@ When a directory name could be passed in to the script
 ### Style guide for shell scripts
 https://google.github.io/styleguide/shellguide.html#s7-naming-conventions  
 
+### Printing version numbers
+FFmpeg/general approach: https://stackoverflow.com/questions/54363923/finding-ffmpeg-installed-version  
+
 ### Time-lapse videos
 [Build a Raspberry Pi time-lapse rig](https://reprage.com/post/how-to-build-a-raspberry-pi-time-lapse-rig)  
 [Creating a time-lapse video ... with ffmpeg](https://medium.com/@sekhar.rahul/creating-a-time-lapse-video-on-the-command-line-with-ffmpeg-1a7566caf877)
 
 ### Random
-- https://www.cyberciti.biz/faq/linux-unix-formatting-dates-for-display/
+- [Formatting dates for display](https://www.cyberciti.biz/faq/linux-unix-formatting-dates-for-display/)
+- [Echo with no trailing newline](https://stackoverflow.com/questions/38021348/how-can-i-echo-out-things-without-a-newline)
 
 
 ## Next steps
 
-- Continue coding it up, beginning with program defaults and the key functions.
+- Continue coding it up, next is the quit/cleanup function, then the actual images to movie part.
