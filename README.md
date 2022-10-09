@@ -6,7 +6,7 @@ The main reason for writing this is to combine all ~2,000 of Little H’s selfie
 
 ## What is the status
 
-The basic skeleton of the program flow is complete. Now working on the program functions (2022/09/21)
+The basic skeleton of the program flow is complete. Now working on the program functions (2022/10/09)
 
 ## What is the plan
 
