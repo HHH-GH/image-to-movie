@@ -271,6 +271,16 @@ function main(){
 			# Must be in this order
 			images_to_movie ${IMG_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_OUTPUT_FPS}
 			
+			# Assign the defaults to variables
+			local make_img_src_dir=${IMG_SOURCE_DIR}
+			local make_img_output_dir=${IMG_OUTPUT_DIR}
+			local make_vid_output_width=${VID_OUTPUT_WIDTH} 
+			local make_vid_output_height=${VID_OUTPUT_HEIGHT}
+			local make_vid_output_fps=${VID_OUTPUT_FPS}
+						
+			# Call the make movie function, passing in those variables
+			images_to_movie ${make_img_src_dir} ${make_img_output_dir} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
+			
 		elif [[ "${menu_input}" == "s" ]]; then
 			
 			# Show the default settings
