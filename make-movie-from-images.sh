@@ -35,6 +35,12 @@ command -v "${FF_FFMPEG}"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg c
 
 # 3. Set program defaults
 
+# TODO(HHH-GH): this?
+# https://dwheeler.com/essays/filenames-in-shell.html
+# 3.2 Set IFS to just newline and tab at the start of each script
+# IFS="$(printf '\n\t')"
+
+
 # Folder locations
 readonly IMG_SOURCE_DIR='./source'
 readonly IMG_OUTPUT_DIR='./output'
@@ -158,6 +164,8 @@ images_to_movie(){
 	
 	# Get all the jpgs (change the extension for others)
 	local img_arr=(`ls ${make_img_src_dir} | grep -i '.jpg'`)
+	# or this?
+	# local img_arr=(`find "${make_img_src_dir}/" -maxdepth 1 -iname '*.jpg'`)
 	local img_count=${#img_arr[*]}
 	
 	# Are there any images to process
@@ -169,6 +177,10 @@ images_to_movie(){
 	# Make the tmp directory for the images
 	mkdir -p "${make_img_output_tmp_dir}"  # -p means that it doesn't write an error if the folder exists
 	
+	# Loop through img_arr and process the files
+	# TODO(HHH-GH): For the loop, review this
+	# https://dwheeler.com/essays/filenames-in-shell.html
+	# 4.1 Beware of globs (and the rest of the globbing section)
 	
 	# 2.
 	# Make a movie from those files using make_vid_output_fps
