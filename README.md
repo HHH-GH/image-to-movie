@@ -90,13 +90,25 @@ For each of the images, decide
 
 ## Resources to use while making it
 
-### Safely Handling pathnames and filenames in shell https://dwheeler.com/essays/filenames-in-shell.html  
+### Safely Handling pathnames and filenames in shell 
+https://dwheeler.com/essays/filenames-in-shell.html  
 Especially prepending ./ and the for loops, and stripping/prepending something when a path/filename starts with `-`  
 
-### Prevent directory traversal in bash script https://stackoverflow.com/questions/62576599/prevent-directory-traversal-vulnerability-in-bash-script  
+### Prevent directory traversal in bash script 
+https://stackoverflow.com/questions/62576599/prevent-directory-traversal-vulnerability-in-bash-script  
 When a directory name could be passed in to the script
 
 **Idea:** How about making it so the output directory is fixed, and the movies are output with timestamp and fps and size tags so they're unique e.g. `202209161139_8fps_720w_720h.mp4`. Then we don't have to worry that the script might output files into a random/bad location on the computer. Then it doesn't matter if the source directory is random/bad either, because the script will only get jpgs (?)
+
+### Delete JPG files in tmp
+https://superuser.com/questions/902064/how-to-recursivly-delete-all-jpg-files-but-keep-the-ones-containing-sample
+https://superuser.com/questions/654416/is-the-rm-buildin-gnu-command-case-sensitive
+
+### Suppress an error message if trying to delete a directory that is not empty
+https://unix.stackexchange.com/questions/387048/why-does-rmdir-p-ignore-fail-on-non-empty-fail-when-encountering-home
+
+### Check the number of arguments passed to a bash script
+https://stackoverflow.com/questions/18568706/check-number-of-arguments-passed-to-a-bash-script
 
 ### Style guide for shell scripts
 https://google.github.io/styleguide/shellguide.html#s7-naming-conventions  
