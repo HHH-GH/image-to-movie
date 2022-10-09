@@ -148,8 +148,17 @@ function print_program_versions(){
 #	None
 #######################################
 function quit_program(){
-	# TODO(HHH-GH): unset the constants and program default variables
-	echo -e "\n\tQUITTING"
+	
+	echo -en "\n\tQUITTING"
+
+	sleep .5
+	echo -en "."
+	sleep .5
+	echo -en "."
+	sleep .5
+	echo -en "."
+	sleep .5
+	
 }
 
 

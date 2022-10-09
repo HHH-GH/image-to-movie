@@ -115,4 +115,4 @@ FFmpeg/general approach: https://stackoverflow.com/questions/54363923/finding-ff
 
 ## Next steps
 
-- Continue coding it up, next is the quit/cleanup function, then the actual images to movie part.
+- Continue coding it up, next is the actual images to movie parts.
