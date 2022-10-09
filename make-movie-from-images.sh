@@ -77,10 +77,96 @@ function print_program_menu(){
 
 "
 
-	echo "$menu_options"
+	echo -ne "$menu_options\t"
 	
 }
 
+
+#######################################
+# Make the images into a movie.
+# Globals:
+#	None
+# Arguments:
+#	make_img_src_dir
+#	make_img_output_dir
+#	make_vid_output_width
+#	make_vid_output_height
+#	make_vid_output_fps
+# Outputs:
+#	Takes the images in make_img_src_dir
+#	Resizes them on a canvas that is
+#	make_vid_output_width × 
+#	make_vid_output_height
+#	and saves each image into 
+#	make_img_output_dir/tmp
+#	Then combines those images into a
+#	video at make_vid_output_fps that is 
+#	saved in make_img_output_dir
+#	Finishing by deleting 
+#	make_img_output_dir/tmp and the images
+#	inside it
+#######################################
+
+
+images_to_movie(){
+
+	# Make sure there are 5 arguments
+	# https://stackoverflow.com/questions/18568706/check-number-of-arguments-passed-to-a-bash-script
+	if [ "$#" -ne 5 ]; then 
+		echo -e "\n\tError: All five parameters are required" >&2
+		return
+	fi
+	
+	# Names for the arguments
+	local make_img_src_dir=$1
+	local make_img_output_dir=$2
+	local make_vid_output_width=$3
+	local make_vid_output_height=$4
+	local make_vid_output_fps=$5
+
+	# Set the temp location for the image processing
+	local make_img_output_tmp_dir="$make_img_output_dir/tmp"
+
+	# First test - echo out the variables
+	# TODO(HHH-GH): replace this with a message about the image to movie process and what's about to happen
+	echo -e "\tImages source directory: ......... '${make_img_src_dir}'"
+	echo -e "\tMovie output directory: .......... '${make_img_output_dir}'"
+	echo -e "\tOutput temporary directory: ...... '${make_img_output_tmp_dir}'"
+	echo -e "\tMovie output width: .............. '${make_vid_output_width}'"
+	echo -e "\tMovie output height: ............. '${make_vid_output_height}'"
+	echo -e "\tMovie output frames per second: .. '${make_vid_output_fps}'\n"
+	
+	# TODO(HHH-GH): everything under here, including the 
+	# part about Safely Handling pathnames and filenames in 
+	# shell https://dwheeler.com/essays/filenames-in-shell.html 
+	
+	# Look for files in make_img_src_dir and then 
+	# 1. Loop through, resize/etc, save to the tmp location
+	# 2. Use the files in the tmp location to make a movie
+	#	 and save the movie in the output location
+	# 3. Delete the tmp files and folder
+	# 4. Print a success message that says the name of the 
+	#	 output file
+	
+	
+	# 1.
+	# Loop through the files in make_img_src_dir, resizing and 
+	# positioning on a canvas that is sized 
+	# 'make_vid_output_width × make_vid_output_height'
+	# and then save each of the images into make_img_output_tmp_dir
+	
+	# 2.
+	# Make a movie from those files using make_vid_output_fps
+	# Movie name like this, with timestamp and fps and size tags so they're unique 
+	# e.g. `202209161139_8fps_720w_720h.mp4`
+	
+	# 3.
+	# Delete make_img_output_tmp_dir and the files inside
+	
+	# 4.
+	# Print a success message
+	
+}
 
 #######################################
 # Show default settings.
@@ -151,13 +237,13 @@ function quit_program(){
 	
 	echo -en "\n\tQUITTING"
 
-	sleep .5
+	sleep .3
 	echo -en "."
-	sleep .5
+	sleep .3
 	echo -en "."
-	sleep .5
+	sleep .3
 	echo -en "."
-	sleep .5
+	sleep .3
 	
 }
 
@@ -169,8 +255,8 @@ function main(){
 	while true; do
 	
 		# Print out the program menu
-		print_program_menu
-
+		print_program_menu		
+		
 		# Get the input
 		read menu_input
 		
@@ -179,6 +265,16 @@ function main(){
 		if [[ "${menu_input}" == "m" ]]; then
 		
 			echo -e "\n\tMaking movie from images according to defaults"
+			
+			# Assign the defaults to variables
+			local make_img_src_dir=${IMG_SOURCE_DIR}
+			local make_img_output_dir=${IMG_OUTPUT_DIR}
+			local make_vid_output_width=${VID_OUTPUT_WIDTH} 
+			local make_vid_output_height=${VID_OUTPUT_HEIGHT}
+			local make_vid_output_fps=${VID_OUTPUT_FPS}
+						
+			# Call the make movie function, passing in those variables
+			images_to_movie ${make_img_src_dir} ${make_img_output_dir} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
 			
 		elif [[ "${menu_input}" == "s" ]]; then
 			
