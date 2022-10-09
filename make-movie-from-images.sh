@@ -154,6 +154,8 @@ images_to_movie(){
 	# positioning on a canvas that is sized 
 	# 'make_vid_output_width × make_vid_output_height'
 	# and then save each of the images into make_img_output_tmp_dir
+	# To show that something is happening, print a . every $i % 5
+	# or something like that
 	
 	# 2.
 	# Make a movie from those files using make_vid_output_fps
@@ -163,6 +165,7 @@ images_to_movie(){
 	# 3.
 	# Delete make_img_output_tmp_dir and the files inside
 	# Keep the folder, only delete JPG files?
+	# Delete only JPG files, then delete the folder only if it is empty
 	
 	# 4.
 	# Print a success message
@@ -229,8 +232,7 @@ function print_program_versions(){
 #######################################
 # Quit the program
 # Globals:
-#	IM_MAGICK
-# 	FF_FFMPEG
+#	None
 # Arguments:
 #	None
 #######################################
@@ -269,17 +271,10 @@ function main(){
 						
 			# Call the make movie function, passing in the default variables as parameters
 			# Must be in this order
+			# images_to_movie ${IMG_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_OUTPUT_FPS}
+									
+			# Call the make movie function, passing in the default variables
 			images_to_movie ${IMG_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_OUTPUT_FPS}
-			
-			# Assign the defaults to variables
-			local make_img_src_dir=${IMG_SOURCE_DIR}
-			local make_img_output_dir=${IMG_OUTPUT_DIR}
-			local make_vid_output_width=${VID_OUTPUT_WIDTH} 
-			local make_vid_output_height=${VID_OUTPUT_HEIGHT}
-			local make_vid_output_fps=${VID_OUTPUT_FPS}
-						
-			# Call the make movie function, passing in those variables
-			images_to_movie ${make_img_src_dir} ${make_img_output_dir} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
 			
 		elif [[ "${menu_input}" == "s" ]]; then
 			
