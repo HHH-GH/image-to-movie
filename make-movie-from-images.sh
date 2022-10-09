@@ -8,8 +8,7 @@
 
 # 1. Load the .env file
 # https://gist.github.com/mihow/9c7f559807069a03e302605691f85572
-if [ ! -f .env ]
-then
+if [[ ! -f .env ]]; then
 	# there is no .env
 	echo -e "\nERROR: No .env file" # -e flag makes echo interpret backslash characters
 	echo -e "\nUse .env.sample to make a .env file"
@@ -112,7 +111,7 @@ images_to_movie(){
 
 	# Make sure there are 5 arguments
 	# https://stackoverflow.com/questions/18568706/check-number-of-arguments-passed-to-a-bash-script
-	if [ "$#" -ne 5 ]; then 
+	if [[ "$#" -ne 5 ]]; then 
 		echo -e "\n\tError: All five parameters are required" >&2
 		return
 	fi
@@ -157,6 +156,20 @@ images_to_movie(){
 	# To show that something is happening, print a . every $i % 5
 	# or something like that
 	
+	# Get all the jpgs (change the extension for others)
+	local img_arr=(`ls ${make_img_src_dir} | grep -i '.jpg'`)
+	local img_count=${#img_arr[*]}
+	
+	# Are there any images to process
+	if [[ ! "${img_count}" -gt 0 ]]; then
+		echo -e "\n\tError: No JPG images found in '${make_img_src_dir}'"
+		return		
+	fi
+	
+	# Make the tmp directory for the images
+	mkdir -p "${make_img_output_tmp_dir}"  # -p means that it doesn't write an error if the folder exists
+	
+	
 	# 2.
 	# Make a movie from those files using make_vid_output_fps
 	# Movie name like this, with timestamp and fps and size tags so they're unique 
@@ -166,6 +179,22 @@ images_to_movie(){
 	# Delete make_img_output_tmp_dir and the files inside
 	# Keep the folder, only delete JPG files?
 	# Delete only JPG files, then delete the folder only if it is empty
+	
+	# Delete JPG files in tmp
+	# https://superuser.com/questions/902064/how-to-recursivly-delete-all-jpg-files-but-keep-the-ones-containing-sample
+	# https://superuser.com/questions/654416/is-the-rm-buildin-gnu-command-case-sensitive
+	# find in the output temporary directory
+	# -maxdepth 1 only in that directory and not subdirectories
+	# Anything that matches (case-insensitive) '.jpg'
+	# and then delete it
+	find "${make_img_output_tmp_dir}/" -maxdepth 1 -iname '*.jpg' -delete
+	
+	# Delete tmp if empty
+	# Because we don't want to delete everything by accident
+	# Suppress the error message if it is not empty
+	# https://unix.stackexchange.com/questions/387048/why-does-rmdir-p-ignore-fail-on-non-empty-fail-when-encountering-home
+	rmdir -p --ignore-fail-on-non-empty "${make_img_output_tmp_dir}/"
+	
 	
 	# 4.
 	# Print a success message
@@ -300,8 +329,9 @@ function main(){
 			# return if no good
 			
 			# Call the make movie function, passing in those variables			
-			images_to_movie ${make_img_src_dir} ${make_img_output_dir} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
+			images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
 			
+			echo -e "\n\tTODO: finish this"
 		
 		elif [[ "${menu_input}" == "v" ]]; then
 		
@@ -311,6 +341,14 @@ function main(){
 		elif [[ "${menu_input}" == "t" ]]; then
 		
 			echo -e "\n\tMaking a test movie with the test images"
+			
+			# Call the make movie function, passing in the default variables as parameters,
+			# using the test directory for the source directory
+			# Must be in this order
+			# images_to_movie ${IMG_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_OUTPUT_FPS}
+									
+			# Call the make movie function, passing in the default variables
+			images_to_movie ${IMG_TEST_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_OUTPUT_FPS}
 			
 		elif [[ "${menu_input}" == "q" ]]; then
 			
