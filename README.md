@@ -128,3 +128,5 @@ FFmpeg/general approach: https://stackoverflow.com/questions/54363923/finding-ff
 ## Next steps
 
 - Continue coding it up, next is the actual images to movie parts.
+- Make an error printing function to standardise those https://google.github.io/styleguide/shellguide.html#stdout-vs-stderr
+- Change all IMAGE_MAJICK to IMAGE_MAGICK
