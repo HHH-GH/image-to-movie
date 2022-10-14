@@ -38,7 +38,7 @@ command -v "${FF_FFMPEG}"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg c
 # TODO(HHH-GH): this?
 # https://dwheeler.com/essays/filenames-in-shell.html
 # 3.2 Set IFS to just newline and tab at the start of each script
-# IFS="$(printf '\n\t')"
+IFS="$(printf '\n\t')"
 
 
 # Folder locations
@@ -50,6 +50,14 @@ readonly IMG_TEST_SOURCE_DIR='./test'
 readonly VID_OUTPUT_WIDTH='720' 
 readonly VID_OUTPUT_HEIGHT='720'
 readonly VID_OUTPUT_FPS='8'
+
+# Image quality and processing settings
+readonly IMG_PROCESSING_UNSHARP="-unsharp 0.5x0.5+0.5+0.008"	
+readonly IMG_PROCESSING_CONTRAST="-sigmoidal-contrast 1x50"
+readonly IMG_PROCESSING_COLORSPACE="-colorspace sRGB"			
+readonly IMG_PROCESSING_JPG_QUALITY="-quality 100"
+readonly IMG_PROCESSING_INTERPOLATE="-interpolate bilinear"		# colour sampling when sized down bilinear or catrom (bicubic)
+readonly IMG_PROCESSING_SATURATION="-modulate 100,120,100"		# The middle number is the saturation i.e. 120 = 20%
 
 # 4. The actual program TODO(HHH-GH): all of it (printing defaults & versions, quit and clean up, image and movie processing)
 
@@ -162,10 +170,11 @@ images_to_movie(){
 	# To show that something is happening, print a . every $i % 5
 	# or something like that
 	
-	# Get all the jpgs (change the extension for others)
+	# Get all the jpgs	
+	# This gets the file name of the image, without the folder name
 	local img_arr=(`ls ${make_img_src_dir} | grep -i '.jpg'`)
 	# or this?
-	# local img_arr=(`find "${make_img_src_dir}/" -maxdepth 1 -iname '*.jpg'`)
+	
 	local img_count=${#img_arr[*]}
 	
 	# Are there any images to process
@@ -177,20 +186,75 @@ images_to_movie(){
 	# Make the tmp directory for the images
 	mkdir -p "${make_img_output_tmp_dir}"  # -p means that it doesn't write an error if the folder exists
 	
-	# Loop through img_arr and process the files
-	# TODO(HHH-GH): For the loop, review this
-	# https://dwheeler.com/essays/filenames-in-shell.html
-	# 4.1 Beware of globs (and the rest of the globbing section)
+	# Loop through img_arr and process the files	
+	
+	# A status message
+	echo -en "\n\tResizing images\n"
+	local i=1
+	for infile in ${img_arr[*]}; do
+		
+		#TODO(HHH-GH): check that the file name doesn't start with -
+		# (Or it will be interpreted as an argument in the image magick function)
+		
+		# An indent for the dots
+		if [[ ${i} -eq 1 ]]; then
+			echo -en "\t"
+		fi
+		
+		# Print a dot every N images
+		local images_per_dot=5
+		if [[ $( expr ${i} % ${images_per_dot} ) -eq 0 ]]; then
+			echo -en "."
+		fi
+		
+		# Detect image size
+		# -quiet so it doesn't give warnings
+		# Put the src dir in front of the image name "${make_img_src_dir}"/"${infile}"
+		local source_image_width=$("${IM_IDENTIFY}" -quiet -format "%w" "${make_img_src_dir}"/"${infile}")
+		local source_image_height=$("${IM_IDENTIFY}" -quiet -format "%h" "${make_img_src_dir}"/"${infile}")
+		
+		# Write the string for the resize part		
+		# What should happen here
+		# The image should maintain it's proportions and aspect ratio
+		# Can't be wider than VID_OUTPUT_WIDTH
+		# Can't be taller than VID_OUTPUT_WIDTH
+		# According to www.imagemagick.org/Usage/resize/
+		# If the resize string is VID_OUTPUT_WIDTHxVID_OUTPUT_HEIGHT\>		
+		# this will happen automatically, and the image will only be resized
+		# if it is larger than those dimensions (that's the \> part)
+		# The image is saved in $make_img_output_tmp_dir
+				
+		#TODO(HHH-GH): figure out how to pass the unsharp arguments/etc as variables
+		"${IM_CONVERT}" -quiet \
+		"${make_img_src_dir}"/"${infile}" \
+		-auto-orient \
+		-resize "${VID_OUTPUT_WIDTH}"x"${VID_OUTPUT_HEIGHT}"\> \
+		-unsharp 0.5x0.5+0.5+0.008 \
+		-sigmoidal-contrast 1x50 \
+		-colorspace sRGB \
+		-quality 100 \
+		-interpolate bilinear \
+		-modulate 100,120,100 \
+		"${make_img_output_tmp_dir}"/"${infile}"
+		
+		# Increment the counter
+		(( i++ ))
+	done
+	
 	
 	# 2.
 	# Make a movie from those files using make_vid_output_fps
 	# Movie name like this, with timestamp and fps and size tags so they're unique 
 	# e.g. `202209161139_8fps_720w_720h.mp4`
 	
+	echo -en "\n\tTurning the images into a movie\n"
+	
 	# 3.
 	# Delete make_img_output_tmp_dir and the files inside
 	# Keep the folder, only delete JPG files?
 	# Delete only JPG files, then delete the folder only if it is empty
+	
+	echo -en "\n\tCleaning up the temporary files\n"
 	
 	# Delete JPG files in tmp
 	# https://superuser.com/questions/902064/how-to-recursivly-delete-all-jpg-files-but-keep-the-ones-containing-sample
@@ -210,6 +274,9 @@ images_to_movie(){
 	
 	# 4.
 	# Print a success message
+	# Including the name of the movie and where it is located
+	
+	echo -en "\n\tFinished!\n"
 	
 }
 
