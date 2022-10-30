@@ -38,6 +38,13 @@ command -v "${FF_FFMPEG}"  >/dev/null 2>&1 || { echo >&2 "ERROR: FFmpeg ffmpeg c
 # TODO(HHH-GH): this?
 # https://dwheeler.com/essays/filenames-in-shell.html
 # 3.2 Set IFS to just newline and tab at the start of each script
+# IFS means the Field Separators
+# Setting it to just \n (new lines) and \t (tab) means that the script
+# should be able to handle file names with spaces in them
+# With this setting, though, any arguments passed to commands as flags
+# won't be separated on the space and won't work
+# e.g. -unsharp 0.5x0.5+0.5x0.5+0.008 
+# - The 0.5x0.5 etc would be counted as part of the -h
 IFS="$(printf '\n\t')"
 
 
@@ -52,12 +59,13 @@ readonly VID_OUTPUT_HEIGHT='720'
 readonly VID_OUTPUT_FPS='8'
 
 # Image quality and processing settings
-readonly IMG_PROCESSING_UNSHARP="-unsharp 0.5x0.5+0.5+0.008"	
-readonly IMG_PROCESSING_CONTRAST="-sigmoidal-contrast 1x50"
-readonly IMG_PROCESSING_COLORSPACE="-colorspace sRGB"			
-readonly IMG_PROCESSING_JPG_QUALITY="-quality 100"
-readonly IMG_PROCESSING_INTERPOLATE="-interpolate bilinear"		# colour sampling when sized down bilinear or catrom (bicubic)
-readonly IMG_PROCESSING_SATURATION="-modulate 100,120,100"		# The middle number is the saturation i.e. 120 = 20%
+#readonly IMG_PROCESSING_UNSHARP="-unsharp 0.5x0.5+0.5+0.008"
+readonly IMG_PROCESSING_UNSHARP="0.5x0.5+0.5+0.008"				# used like -unsharp "${IMG_PROCESSING_UNSHARP}"
+readonly IMG_PROCESSING_CONTRAST="1x50"							# -sigmoidal-contrast "${IMG_PROCESSING_CONTRAST}"
+readonly IMG_PROCESSING_COLORSPACE="sRGB"						# -colorspace "${IMG_PROCESSING_COLORSPACE}"
+readonly IMG_PROCESSING_JPG_QUALITY="100"						# -quality "${IMG_PROCESSING_COLORSPACE}"
+readonly IMG_PROCESSING_INTERPOLATE="bilinear"					# -interpolate "${IMG_PROCESSING_INTERPOLATE}" Colour sampling when sized down bilinear or catrom (bicubic)
+readonly IMG_PROCESSING_SATURATION="100,120,100"				# -modulate "${IMG_PROCESSING_SATURATION}" The middle number is the saturation i.e. 120 = 20%
 
 # 4. The actual program TODO(HHH-GH): all of it (printing defaults & versions, quit and clean up, image and movie processing)
 
@@ -229,12 +237,12 @@ images_to_movie(){
 		"${make_img_src_dir}"/"${infile}" \
 		-auto-orient \
 		-resize "${VID_OUTPUT_WIDTH}"x"${VID_OUTPUT_HEIGHT}"\> \
-		-unsharp 0.5x0.5+0.5+0.008 \
-		-sigmoidal-contrast 1x50 \
-		-colorspace sRGB \
-		-quality 100 \
-		-interpolate bilinear \
-		-modulate 100,120,100 \
+		-unsharp "${IMG_PROCESSING_UNSHARP}" \
+		-sigmoidal-contrast "${IMG_PROCESSING_CONTRAST}" \
+		-colorspace "${IMG_PROCESSING_COLORSPACE}" \
+		-quality "${IMG_PROCESSING_JPG_QUALITY}" \
+		-interpolate "${IMG_PROCESSING_INTERPOLATE}" \
+		-modulate "${IMG_PROCESSING_SATURATION}" \
 		"${make_img_output_tmp_dir}"/"${infile}"
 		
 		# Increment the counter
