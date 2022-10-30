@@ -127,6 +127,10 @@ FFmpeg/general approach: https://stackoverflow.com/questions/54363923/finding-ff
 
 
 ## Next steps
+Continue coding it up, next is the actual images to movie parts.
+- It's basically finished?
+- Need to do the function where the settings can be changed from the defaults
+- Need to go through and check what else I missed
 
-- Continue coding it up, next is the actual images to movie parts.
+Then tidy/refactor/check
 - Make an error printing function to standardise those https://google.github.io/styleguide/shellguide.html#stdout-vs-stderr
