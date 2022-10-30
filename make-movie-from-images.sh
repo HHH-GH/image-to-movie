@@ -53,10 +53,17 @@ readonly IMG_SOURCE_DIR='./source'
 readonly IMG_OUTPUT_DIR='./output'
 readonly IMG_TEST_SOURCE_DIR='./test'
 
+# Temp file that holds a list of processed images to make into a movie
+# Holds a list of images to concatenate into a movie
+# https://trac.ffmpeg.org/wiki/Concatenate
+# Created during processing
+# Gets deleted during clean up
+readonly PROCESSED_IMG_FILE_LIST='list.txt'
+
 # Output settings
 readonly VID_OUTPUT_WIDTH='720' 
 readonly VID_OUTPUT_HEIGHT='720'
-readonly VID_OUTPUT_FPS='8'
+readonly VID_OUTPUT_FPS='12'
 
 # Image quality and processing settings
 #readonly IMG_PROCESSING_UNSHARP="-unsharp 0.5x0.5+0.5+0.008"
@@ -147,6 +154,9 @@ images_to_movie(){
 
 	# Set the temp location for the image processing
 	local make_img_output_tmp_dir="$make_img_output_dir/tmp"
+	
+	# Name of the output file
+	make_vid_output_filename=$( date +%Y%m%d%H%M )
 
 	# First test - echo out the variables
 	# TODO(HHH-GH): replace this with a message about the image to movie process and what's about to happen
@@ -177,18 +187,19 @@ images_to_movie(){
 	# and then save each of the images into make_img_output_tmp_dir
 	# To show that something is happening, print a . every $i % 5
 	# or something like that
+		
+	# A status message
+	echo -en "\n\t1/3: Resizing images\n"
 	
 	# Get all the jpgs	
 	# This gets the file name of the image, without the folder name
 	local img_arr=(`ls ${make_img_src_dir} | grep -i '.jpg'`)
-	# or this?
-	
 	local img_count=${#img_arr[*]}
 	
 	# Are there any images to process
 	if [[ ! "${img_count}" -gt 0 ]]; then
 		echo -e "\n\tError: No JPG images found in '${make_img_src_dir}'"
-		return		
+		return
 	fi
 	
 	# Make the tmp directory for the images
@@ -196,17 +207,15 @@ images_to_movie(){
 	
 	# Loop through img_arr and process the files	
 	
-	# A status message
-	echo -en "\n\tResizing images\n"
 	local i=1
 	for infile in ${img_arr[*]}; do
 		
 		#TODO(HHH-GH): check that the file name doesn't start with -
 		# (Or it will be interpreted as an argument in the image magick function)
 		
-		# An indent for the dots
+		# An indent for the dots, and the first dot
 		if [[ ${i} -eq 1 ]]; then
-			echo -en "\t"
+			echo -en "\t."
 		fi
 		
 		# Print a dot every N images
@@ -218,8 +227,8 @@ images_to_movie(){
 		# Detect image size
 		# -quiet so it doesn't give warnings
 		# Put the src dir in front of the image name "${make_img_src_dir}"/"${infile}"
-		local source_image_width=$("${IM_IDENTIFY}" -quiet -format "%w" "${make_img_src_dir}"/"${infile}")
-		local source_image_height=$("${IM_IDENTIFY}" -quiet -format "%h" "${make_img_src_dir}"/"${infile}")
+		#local source_image_width=$("${IM_IDENTIFY}" -quiet -format "%w" "${make_img_src_dir}"/"${infile}")
+		#local source_image_height=$("${IM_IDENTIFY}" -quiet -format "%h" "${make_img_src_dir}"/"${infile}")
 		
 		# Write the string for the resize part		
 		# What should happen here
@@ -231,31 +240,103 @@ images_to_movie(){
 		# this will happen automatically, and the image will only be resized
 		# if it is larger than those dimensions (that's the \> part)
 		# The image is saved in $make_img_output_tmp_dir
-				
+		# The image name is converted to lower case for convenience in our glob match later
+		
 		#TODO(HHH-GH): figure out how to pass the unsharp arguments/etc as variables
+		
+		# Lower case the file name for convenience in our glob match later
+		# the ,, part works in Bash 4
+		local lowercase_infile="${infile,,}"
+			
+		
 		"${IM_CONVERT}" -quiet \
 		"${make_img_src_dir}"/"${infile}" \
 		-auto-orient \
-		-resize "${VID_OUTPUT_WIDTH}"x"${VID_OUTPUT_HEIGHT}"\> \
+		-resize "${make_vid_output_width}"x"${make_vid_output_height}"\> \
 		-unsharp "${IMG_PROCESSING_UNSHARP}" \
 		-sigmoidal-contrast "${IMG_PROCESSING_CONTRAST}" \
 		-colorspace "${IMG_PROCESSING_COLORSPACE}" \
 		-quality "${IMG_PROCESSING_JPG_QUALITY}" \
 		-interpolate "${IMG_PROCESSING_INTERPOLATE}" \
 		-modulate "${IMG_PROCESSING_SATURATION}" \
-		"${make_img_output_tmp_dir}"/"${infile}"
+		"${make_img_output_tmp_dir}"/"${lowercase_infile}"
 		
 		# Increment the counter
 		(( i++ ))
 	done
 	
+	# Clean up from processing the images loop
+	unset i
+	unset img_arr
+	unset img_count
+		
 	
 	# 2.
 	# Make a movie from those files using make_vid_output_fps
 	# Movie name like this, with timestamp and fps and size tags so they're unique 
 	# e.g. `202209161139_8fps_720w_720h.mp4`
 	
-	echo -en "\n\tTurning the images into a movie\n"
+	echo -en "\n\t2/3: Turning the images into a movie\n"
+	
+	# Are there any processed images to turn into a movie?
+	# Get all the jpgs	
+	# This gets the file name of the image, without the folder name
+	local processed_img_arr=(`ls ${make_img_output_tmp_dir} | grep -i '.jpg'`)
+	local processed_img_count=${#processed_img_arr[*]}
+	
+	# Are there any processed images to turn into a movie
+	if [[ ! "${processed_img_count}" -gt 0 ]]; then
+		echo -e "\n\tError: No processed JPG images found in '${make_img_output_tmp_dir}'"
+		return		
+	fi
+	
+	# Was going to loop through processed_img_arr and make a list of files to process
+	# If using concat, the duration of each file should also be set
+	# https://ffmpeg.org/ffmpeg-formats.html#concat
+	# Duration = 1/fps
+	# But bash can't do decimals so we have to do a glob match like before
+	# Leaving this comment for reference
+	# Globbing not supported on Windows? 
+	# Also leaving in this for reference
+	# So have to pass it in from a pipe
+	
+	
+	
+	# TODO(HHH-GH): the actual steps for making the movie
+	# Processing the image steps
+	# Might want to put making the black background into the resizing part instead of here
+	# or I can create a temp file to use as one of the inputs
+	# or the first input is the black background
+	# But how to calculate the position?
+	# Can I just use a crop and is there an option to center it?
+	# https://ffmpeg.org/ffmpeg-filters.html#crop
+	# -filter:v "crop=w:h:x:y" or -vf "crop=10:10:0:0"  https://bytexd.com/ffmpeg-how-to-crop-videos-images-using-the-crop-filter/
+	# "If x and y are not specified, the command will default to start cropping from the center"
+	# "FFmpeg gets the original input video width (iw) and height (ih) values automatically, so you can perform mathematical 
+	# operations using those values (e.g. iw/2 for half the input video width, or ih-100 to subtract 100 pixels from the input video height).
+	# https://www.linuxuprising.com/2020/01/ffmpeg-how-to-crop-videos-with-examples.html
+	#
+	# So
+	# Draw a box as one input
+	# Glob the files as the other input
+	# Layer the files on top of the box
+	# Scaling to fit the images in
+	# https://superuser.com/questions/547296/resizing-videos-with-ffmpeg-avconv-to-fit-into-static-sized-player/1136305#1136305
+	
+	
+	#echo "${FF_FFMPEG}" -framerate "${make_vid_output_fps}" -vcodec mjpeg -pattern_type glob -i "${make_img_output_tmp_dir}"/*.jpg -r 30 -c:v libx264 -crf 17 -pix_fmt yuv420p "${make_img_output_dir}"/test.mp4 -hide_banner -loglevel error
+	cat "${make_img_output_tmp_dir}"/*.jpg | "${FF_FFMPEG}" -framerate "${make_vid_output_fps}" -vcodec mjpeg -f image2pipe -i - -vf "scale=${make_vid_output_width}:${make_vid_output_height}:force_original_aspect_ratio=decrease:eval=frame,pad=${make_vid_output_width}:${make_vid_output_height}:-1:-1:color=black" -r 30 -c:v libx264 -crf 17 -pix_fmt yuv420p "${make_img_output_dir}"/"${make_vid_output_filename}".mp4 -hide_banner -loglevel error
+		
+	# Just draw a box
+	#"${FF_FFMPEG}" -i color=c=black:s="${make_vid_output_width}"x"${make_vid_output_height}":r="${make_vid_output_fps}" test.mp4 -hide_banner
+	
+	echo -en "\n\tMovie saved as '${make_vid_output_filename}.mp4' in '${make_img_output_dir}'\n"
+	
+	# Clean up from making the movies loop
+	unset processed_img_arr
+	unset processed_img_count
+	unset make_vid_output_filename
+	
 	
 	# 3.
 	# Delete make_img_output_tmp_dir and the files inside
@@ -272,6 +353,9 @@ images_to_movie(){
 	# Anything that matches (case-insensitive) '.jpg'
 	# and then delete it
 	find "${make_img_output_tmp_dir}/" -maxdepth 1 -iname '*.jpg' -delete
+	
+	# Delete the list of files
+	rm -f "${make_img_output_tmp_dir}"/"${PROCESSED_IMG_FILE_LIST}"
 	
 	# Delete tmp if empty
 	# Because we don't want to delete everything by accident
