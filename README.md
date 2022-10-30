@@ -121,7 +121,8 @@ FFmpeg/general approach: https://stackoverflow.com/questions/54363923/finding-ff
 [Creating a time-lapse video ... with ffmpeg](https://medium.com/@sekhar.rahul/creating-a-time-lapse-video-on-the-command-line-with-ffmpeg-1a7566caf877)
 
 ### Random
-- [Formatting dates for display](https://www.cyberciti.biz/faq/linux-unix-formatting-dates-for-display/)
+- [Formatting dates for display 1](https://www.cyberciti.biz/faq/linux-unix-formatting-dates-for-display/)
+- [Formatting dates for display 2](https://unix.stackexchange.com/questions/428217/current-time-date-as-a-variable-in-bash-and-stopping-a-program-with-a-script)
 - [Echo with no trailing newline](https://stackoverflow.com/questions/38021348/how-can-i-echo-out-things-without-a-newline)
 
 
