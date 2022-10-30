@@ -63,7 +63,7 @@ readonly PROCESSED_IMG_FILE_LIST='list.txt'
 # Output settings
 readonly VID_OUTPUT_WIDTH='720' 
 readonly VID_OUTPUT_HEIGHT='720'
-readonly VID_OUTPUT_FPS='12'
+readonly VID_OUTPUT_FPS='24'
 
 # Image quality and processing settings
 #readonly IMG_PROCESSING_UNSHARP="-unsharp 0.5x0.5+0.5+0.008"
@@ -246,6 +246,8 @@ images_to_movie(){
 		
 		# Lower case the file name for convenience in our glob match later
 		# the ,, part works in Bash 4
+		# or a more compatible way like
+		# local lowercase_infile=`echo "$infile" | tr '[:upper:]' '[:lower:]'` 
 		local lowercase_infile="${infile,,}"
 			
 		
@@ -343,7 +345,7 @@ images_to_movie(){
 	# Keep the folder, only delete JPG files?
 	# Delete only JPG files, then delete the folder only if it is empty
 	
-	echo -en "\n\tCleaning up the temporary files\n"
+	echo -en "\n\t3/3: Cleaning up the temporary files\n"
 	
 	# Delete JPG files in tmp
 	# https://superuser.com/questions/902064/how-to-recursivly-delete-all-jpg-files-but-keep-the-ones-containing-sample
