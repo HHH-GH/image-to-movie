@@ -229,9 +229,10 @@ images_to_movie(){
 		
 		# Lower case the file name
 		# the ,, part works in Bash 4
-		# or a more compatible way like
-		# local lowercase_infile=`echo "$infile" | tr '[:upper:]' '[:lower:]'` 
-		local lowercase_infile="${infile,,}"
+		# e.g. local lowercase_infile="${infile,,}"
+		# A more compatible way is like
+		local lowercase_infile=`echo "$infile" | tr '[:upper:]' '[:lower:]'` 
+		
 			
 		# Process and save the image
 		"${IM_CONVERT}" -quiet \

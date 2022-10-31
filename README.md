@@ -133,7 +133,6 @@ Continue coding it up, next is the actual images to movie parts.
 - Need to go through and check what else I missed
 - Need to do the settings and checks and hints for max/min video dimensions, max/min fps, etc
 - Hard code the fps for the test run to 2fps, so the test video is 4s long instead of less than 1s - easier to see what's happened
-- Make some of the test images file extensions uppercase to test the lower casing, test the more compatible version of lowercasing
 - Should the image_to_movie function echo out the settings it is using? (Yes?)
 - Image filename sanitation (doesn't begin with -, doesn't include ../, ...)
 - The output file name for the movie includes timestamp, width, height, and fps used
