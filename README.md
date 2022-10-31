@@ -131,6 +131,14 @@ Continue coding it up, next is the actual images to movie parts.
 - It's basically finished?
 - Need to do the function where the settings can be changed from the defaults
 - Need to go through and check what else I missed
+- Need to do the settings and checks and hints for max/min video dimensions, max/min fps, etc
+- Hard code the fps for the test run to 2fps, so the test video is 4s long instead of less than 1s - easier to see what's happened
+- Make some of the test images file extensions uppercase to test the lower casing, test the more compatible version of lowercasing
+- Should the image_to_movie function echo out the settings it is using? (Yes?)
+- Image filename sanitation (doesn't begin with -, doesn't include ../, ...)
+- The output file name for the movie includes timestamp, width, height, and fps used
+- The option to supply different settings for a single run (first do the settings and checks and hints for max/min video dimensions, max/min fps, etc)
 
 Then tidy/refactor/check
 - Make an error printing function to standardise those https://google.github.io/styleguide/shellguide.html#stdout-vs-stderr
+- Refactor if needed e.g. option for overriding some of the default settings in the .env file (have certain settings at the top as readonly, other settings are set in the main file but could be overwritten when the .env file is loaded further down, make it so the .env file is not strictly necessary?)
