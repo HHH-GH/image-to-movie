@@ -214,7 +214,7 @@ images_to_movie(){
 			echo -en "."
 		fi
 		
-		# Write the string for the resize part		
+		# Write the command for the resize part		
 		# What should happen here
 		# The image should maintain its proportions and aspect ratio
 		# Can't be wider than VID_OUTPUT_WIDTH
