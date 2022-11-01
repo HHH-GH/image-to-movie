@@ -147,7 +147,7 @@ images_to_movie(){
 	local make_img_output_tmp_dir="$make_img_output_dir/tmp"
 	
 	# Name of the output file
-	make_vid_output_filename=$( date +%Y%m%d%H%M )
+	make_vid_output_filename=$( date +%Y%m%d%H%M )_"${make_vid_output_width}"w_"${make_vid_output_height}"h_"${make_vid_output_fps}"fps
 
 	# First test - echo out the variables
 	# TODO(HHH-GH): replace this with a message about the image to movie process and what's about to happen
