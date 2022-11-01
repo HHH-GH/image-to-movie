@@ -350,7 +350,7 @@ images_to_movie(){
 	echo -en "\n\tFinished!\n"
 	echo -en "\n\tMovie saved as '${make_vid_output_filename}.mp4' in '${make_img_output_dir}'\n"
 	
-	# Last variable to clean up
+	# Last variable to cleanup
 	unset make_vid_output_filename
 }
 
