@@ -265,28 +265,15 @@ images_to_movie(){
 	
 	echo -en "\n\t2/3: Turning the images into a movie\n"
 	
-	# Get all the jpgs	
-	# This gets the file name of the image, without the folder name
+	# Are there any processed images to turn into a movie
 	local processed_img_arr=(`ls ${make_img_output_tmp_dir} | grep -i '.jpg'`)
 	local processed_img_count=${#processed_img_arr[*]}
-	
-	# Are there any processed images to turn into a movie
+		
 	if [[ ! "${processed_img_count}" -gt 0 ]]; then
 		echo -e "\n\tError: No processed JPG images found in '${make_img_output_tmp_dir}'"
 		return		
 	fi
 	
-	# Was going to loop through processed_img_arr and make a list of files to process
-	# If using concat, the duration of each file should also be set
-	# https://ffmpeg.org/ffmpeg-formats.html#concat
-	# Duration = 1/fps
-	# But bash can't do decimals so we have to do a glob match like before
-	# Leaving this comment for reference
-	# Globbing not supported on Windows? 
-	# Also leaving in this for reference
-	# So have to pass it in from a pipe	
-	
-		
 	# The command to turn all the images into a movie
 	# Because the images are already sized to fit into the box made by
 	# ${make_vid_output_width} and ${make_vid_output_height} the FFmpeg 
@@ -303,7 +290,21 @@ images_to_movie(){
 	# matching and bash can't send decimal values for frame duration into ffmpeg's concat demuxer 
 	# See Slideshow (http://trac.ffmpeg.org/wiki/Slideshow#Framerates) for examples
 	# FFmpeg's -hide_banner and -loglevel error flags are used to suppress any of FFmpeg's output text
-		
+	
+	# ASIDE
+	# The original plan was to loop through the processed_img_arr
+	# and write the filenames into a txt file to process with ffmpeg's concat demuxer
+	# https://ffmpeg.org/ffmpeg-formats.html#concat
+	# e.g.
+	# file 'filename1.jpg'
+	# duration 0.2 (or whatever fps)
+	# But bash can't calculate decimals, which means we'd only be about to do 1fps like that,
+	# the minimum duration would be 1s for each frame
+	# The next plan was to do a glob pattern match
+	# But globbing isn't supported on Windows OS
+	# So we're using ffmpeg's -f image2pipe option, and piping in the images from a `cat` command
+	# Leaving this comment for reference
+	
 	cat "${make_img_output_tmp_dir}"/*.jpg | "${FF_FFMPEG}" \
 	-framerate "${make_vid_output_fps}" \
 	-vcodec mjpeg \
@@ -319,6 +320,7 @@ images_to_movie(){
 	# Clean up from making the movies loop
 	unset processed_img_arr
 	unset processed_img_count	
+	
 	
 	# 4C.
 	# Delete make_img_output_tmp_dir and the files inside
@@ -348,9 +350,10 @@ images_to_movie(){
 	echo -en "\n\tFinished!\n"
 	echo -en "\n\tMovie saved as '${make_vid_output_filename}.mp4' in '${make_img_output_dir}'\n"
 	
-	# Last one to cleanup
+	# Last variable to clean up
 	unset make_vid_output_filename
 }
+
 
 #######################################
 # Show default settings.
@@ -510,6 +513,7 @@ function main(){
 	
 	done
 }
+
 
 # Run the program
 main "$@"
