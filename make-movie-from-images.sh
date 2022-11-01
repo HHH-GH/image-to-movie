@@ -57,6 +57,7 @@ readonly IMG_TEST_SOURCE_DIR='./test'
 readonly VID_OUTPUT_WIDTH='720' 
 readonly VID_OUTPUT_HEIGHT='720'
 readonly VID_OUTPUT_FPS='24'
+readonly VID_TEST_OUTPUT_FPS='2'
 
 # Image quality and processing settings
 #readonly IMG_PROCESSING_UNSHARP="-unsharp 0.5x0.5+0.5+0.008"
@@ -502,7 +503,8 @@ function main(){
 			# images_to_movie ${IMG_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_OUTPUT_FPS}
 									
 			# Call the make movie function, passing in the default variables
-			images_to_movie ${IMG_TEST_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_OUTPUT_FPS}
+			# Test run has a preset FPS so it's easier to see the results in the output video
+			images_to_movie ${IMG_TEST_SOURCE_DIR} ${IMG_OUTPUT_DIR} ${VID_OUTPUT_WIDTH} ${VID_OUTPUT_HEIGHT} ${VID_TEST_OUTPUT_FPS}
 			
 		elif [[ "${menu_input}" == "q" ]]; then
 			
