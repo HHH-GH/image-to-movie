@@ -144,6 +144,12 @@ images_to_movie(){
 	local make_vid_output_height=$4
 	local make_vid_output_fps=$5
 
+	# TODO(HHH-GH): Check the width/height/fps are in allowed range
+	# TODO(HHH-GH): Check the directories are allowed (start with ./, no ../ in the file names)
+	# Ref: the about Safely Handling pathnames and filenames in 
+	# shell https://dwheeler.com/essays/filenames-in-shell.html
+	
+
 	# Set the temp location for the image processing
 	local make_img_output_tmp_dir="$make_img_output_dir/tmp"
 	
@@ -201,8 +207,11 @@ images_to_movie(){
 	local i=1
 	for infile in ${img_arr[*]}; do
 		
-		#TODO(HHH-GH): check that the file name doesn't start with -
+		# TODO(HHH-GH): check that the file name doesn't start with -
 		# (Or it will be interpreted as an argument in the image magick function)
+		# Ref: the part about Safely Handling pathnames and filenames in 
+		# shell https://dwheeler.com/essays/filenames-in-shell.html
+		# Log any files that are skipped? e.g. X files skipped due to weirdo file names
 		
 		# An indent for the dots, and the first dot
 		if [[ ${i} -eq 1 ]]; then
@@ -261,12 +270,12 @@ images_to_movie(){
 	
 	# 4B.
 	# Make a movie from those files using make_vid_output_fps
-	# TODO(HHH-GH): Movie name like this, with timestamp and fps and size tags so they're unique 
-	# e.g. `202209161139_8fps_720w_720h.mp4`
+	# Note: don't need to check filenames as above, those won't have been output?
+	# TODO(HHH-GH): but check just in case?
 	
 	echo -en "\n\t2/3: Turning the images into a movie\n"
 	
-	# Are there any processed images to turn into a movie
+	# Are there any processed images to turn into a movie?
 	local processed_img_arr=(`ls ${make_img_output_tmp_dir} | grep -i '.jpg'`)
 	local processed_img_count=${#processed_img_arr[*]}
 		

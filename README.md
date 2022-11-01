@@ -133,8 +133,8 @@ Continue coding it up, next is the actual images to movie parts.
 - Need to go through and check what else I missed
 - Need to do the settings and checks and hints for max/min video dimensions, max/min fps, etc
 - Should the image_to_movie function echo out the settings it is using? (Yes?)
-- Image filename sanitation (doesn't begin with -, doesn't include ../, ...)
-- The option to supply different settings for a single run (first do the settings and checks and hints for max/min video dimensions, max/min fps, etc)
+- Image/directory filename sanitation (doesn't begin with -, doesn't include ../, ...)
+- The option to supply/read-in different settings for a single run (first do the settings and checks and hints for max/min video dimensions, max/min fps, etc)
 
 Then tidy/refactor/check
 - Make an error printing function to standardise those https://google.github.io/styleguide/shellguide.html#stdout-vs-stderr
