@@ -10,7 +10,7 @@ It's about as finished as I’m going to make it.
 
 ## What is the plan
 
-1. Copy all ~2,000 of Little H’s selfies from my phone
+1. Copy all ~2,000 (edit: nearly 6,000) of Little H’s selfies from my phone
 2. Use Windows File Browser to sort them by "Date Taken"
 3. Rename them all like `0001.JPG`, `0002.jpg` because: 
 	- FFmpeg/ImageMagick probably won’t like files with spaces
