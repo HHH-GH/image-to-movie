@@ -135,7 +135,7 @@ Continue coding it up, next is the actual images to movie parts.
 - Should the image_to_movie function echo out the settings it is using? (Yes?)
 - Image/directory filename sanitation (doesn't begin with -, doesn't include ../, ...)
 - The option to supply/read-in different settings for a single run (first do the settings and checks and hints for max/min video dimensions, max/min fps, etc)
-- Add an exit trap as per https://news.ycombinator.com/item?id=36400465 and linked article
+- Add an exit trap as per https://news.ycombinator.com/item?id=36400465 and [linked article](http://redsymbol.net/articles/bash-exit-traps/)
 
 Then tidy/refactor/check
 - Make an error printing function to standardise those https://google.github.io/styleguide/shellguide.html#stdout-vs-stderr
