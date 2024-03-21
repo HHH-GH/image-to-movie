@@ -5,7 +5,6 @@
 # 3. Set the program defaults
 # 4. The actual program
 
-
 # 1. Load the .env file
 # https://gist.github.com/mihow/9c7f559807069a03e302605691f85572
 if [[ ! -f .env ]]; then
@@ -59,6 +58,14 @@ readonly VID_OUTPUT_HEIGHT='720'
 readonly VID_OUTPUT_FPS='24'
 readonly VID_TEST_OUTPUT_FPS='2'
 
+# Max/min for output settings that are customised
+readonly VID_OUTPUT_WIDTH_MAX='1920' 
+readonly VID_OUTPUT_WIDTH_MIN='320' 
+readonly VID_OUTPUT_HEIGHT_MAX='1280'
+readonly VID_OUTPUT_HEIGHT_MIN='80'
+readonly VID_OUTPUT_FPS_MAX='24'
+readonly VID_OUTPUT_FPS_MIN='1'
+
 # Image quality and processing settings
 #readonly IMG_PROCESSING_UNSHARP="-unsharp 0.5x0.5+0.5+0.008"
 readonly IMG_PROCESSING_UNSHARP="0.5x0.5+0.5+0.008"				# used like -unsharp "${IMG_PROCESSING_UNSHARP}"
@@ -67,6 +74,9 @@ readonly IMG_PROCESSING_COLORSPACE="sRGB"						# -colorspace "${IMG_PROCESSING_C
 readonly IMG_PROCESSING_JPG_QUALITY="100"						# -quality "${IMG_PROCESSING_COLORSPACE}"
 readonly IMG_PROCESSING_INTERPOLATE="bilinear"					# -interpolate "${IMG_PROCESSING_INTERPOLATE}" Colour sampling when sized down bilinear or catrom (bicubic)
 readonly IMG_PROCESSING_SATURATION="100,120,100"				# -modulate "${IMG_PROCESSING_SATURATION}" The middle number is the saturation i.e. 120 = 20%
+
+# Fixed messages
+readonly PROPOSED_SOURCE_DIR_RULES='Alphanumeric, no special characters, location is in the same folder as the script.'
 
 # 4. The actual program functions TODO(HHH-GH): tidy the code
 
@@ -276,7 +286,7 @@ images_to_movie(){
 	echo -en "\n\t2/3: Turning the images into a movie\n"
 	
 	# Are there any processed images to turn into a movie?
-	local processed_img_arr=(`ls ${make_img_output_tmp_dir} | grep -i '.jpg'`)
+	local processed_img_arr=(`ls ${make_img_output_tmp_dir} | grep -i '\.jpg'`)
 	local processed_img_count=${#processed_img_arr[*]}
 		
 	if [[ ! "${processed_img_count}" -gt 0 ]]; then
@@ -357,7 +367,7 @@ images_to_movie(){
 	# 4D.
 	# Print a success message, including the name of the movie and where it is located
 	
-	echo -en "\n\tFinished!\n"
+	echo -en '\n\tFinished!\n'
 	echo -en "\n\tMovie saved as '${make_vid_output_filename}.mp4' in '${make_img_output_dir}'\n"
 	
 	# Last variable to cleanup
@@ -479,21 +489,74 @@ function main(){
 			echo -e "\n\tMaking movie from images with options to override defaults"
 			
 			# TODO(HHH-GH): make this so you can choose to use the default or override them
+			# here's the basic way to read input and fallback to default if nothing is entered
+			# Ask for X, or use default value
+			# echo "Enter path to source directory, or hit Enter to keep default value '${IMG_SOURCE_DIR}': "
+			# read make_img_src_dir
+			#make_img_src_dir=${make_img_src_dir:-${IMG_SOURCE_DIR}}
+			
 			# Assign the defaults to variables
 			local make_img_src_dir=${IMG_SOURCE_DIR}
 			# local make_img_output_dir=${IMG_OUTPUT_DIR} # no this is fixed
 			local make_vid_output_width=${VID_OUTPUT_WIDTH} 
 			local make_vid_output_height=${VID_OUTPUT_HEIGHT}
 			local make_vid_output_fps=${VID_OUTPUT_FPS}
+
+			# Read in new values, printing out the defaults
+			# Source directory of images to process
+			echo -e "\n\tEnter path to custom image source directory, or hit Enter to keep default value '${IMG_SOURCE_DIR}'"
+			echo -e "\n\tShould be ${PROPOSED_SOURCE_DIR_RULES}\n\t"
+			read -p "Enter custom image source directory: " proposed_img_source_dir
+			# prefix the new folder name with ./
+			make_img_src_dir="./"${proposed_img_source_dir:-${IMG_SOURCE_DIR}}
+			
+			# Width of output video
+			echo -e "\n\tEnter width of video (max ${VID_OUTPUT_WIDTH_MAX}, min ${VID_OUTPUT_WIDTH_MIN}), or hit Enter to keep default value '${VID_OUTPUT_WIDTH}'\t"			
+			read -p "Enter custom width of video: " proposed_vid_output_width
+			# prefix the new folder name with ./
+			make_vid_output_width=${proposed_vid_output_width:-${VID_OUTPUT_WIDTH}}
+
+			# Height of output video
+			echo -e "\n\tEnter height of video (max ${VID_OUTPUT_HEIGHT_MAX}, min ${VID_OUTPUT_HEIGHT_MIN}), or hit Enter to keep default value '${VID_OUTPUT_WIDTH}'\t"			
+			read -p "Enter custom height of video: " proposed_vid_output_height
+			# prefix the new folder name with ./
+			make_vid_output_height=${proposed_vid_output_height:-${VID_OUTPUT_WIDTH}}
+
+			# FPS of output video
+			echo -e "\n\tEnter FPS of video (max ${VID_OUTPUT_FPS_MAX}, min ${VID_OUTPUT_FPS_MIN}), or hit Enter to keep default value '${VID_OUTPUT_FPS}'\t"			
+			read -p "Enter custom FPS of video: " proposed_vid_output_fps
+			# prefix the new folder name with ./
+			make_vid_output_fps=${proposed_vid_output_fps:-${VID_OUTPUT_WIDTH}}
+
+
+
+			# Validate them
+			# set this to n if any tests fail
+			local continue_processing='y'
+
+
 			
 			# TODO(HHH-GH): some checks to make sure the provided options are not ridiculous
+			# Do these checks in the image_to_movie function to avoid duplication
 			# e.g. the width and height aren't above Xpx
 			# e.g. the fps isn't like 0.0000001fps 
 			# Set those as constants i.e MAX_FPS MAX_VID_OUTPUT_WIDTH
 			# return if no good
 			
-			# Call the make movie function, passing in those variables			
-			images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
+
+			if [[ "${continue_processing}" == "y" ]]; then
+				# Call the make movie function, passing in those variables			
+				#images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
+				echo -e "\n\tMade the movie"
+			fi
+
+			echo -e "\n\tWould have run script with these values\n"
+			echo -e "\t~~~~~~~~~~~~~~~~~~~~~~~~\n"
+			echo -e "\tImages source directory: ........ '${make_img_src_dir}'"
+			echo -e "\tMovie output directory: ......... '${IMG_OUTPUT_DIR}'"
+			echo -e "\tMovie output width: .............. '${make_vid_output_width}'"
+			echo -e "\tMovie output height: ............. '${make_vid_output_height}'"
+			echo -e "\tMovie output frames per second: .. '${make_vid_output_fps}'\n"
 			
 			echo -e "\n\tTODO: finish this"
 		
