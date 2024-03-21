@@ -6,7 +6,7 @@ The main reason for writing this is to combine all ~2,000 of Little H’s selfie
 
 ## What is the status
 
-The basic skeleton of the program flow is complete. Now working on the program functions (2022/10/09)
+It's about as finished as I’m going to make it.
 
 ## What is the plan
 
@@ -124,19 +124,3 @@ FFmpeg/general approach: https://stackoverflow.com/questions/54363923/finding-ff
 - [Formatting dates for display 1](https://www.cyberciti.biz/faq/linux-unix-formatting-dates-for-display/)
 - [Formatting dates for display 2](https://unix.stackexchange.com/questions/428217/current-time-date-as-a-variable-in-bash-and-stopping-a-program-with-a-script)
 - [Echo with no trailing newline](https://stackoverflow.com/questions/38021348/how-can-i-echo-out-things-without-a-newline)
-
-
-## Next steps
-Continue coding it up, next is the actual images to movie parts.
-- It's basically finished?
-- Need to do the function where the settings can be changed from the defaults
-- Need to go through and check what else I missed
-- Need to do the settings and checks and hints for max/min video dimensions, max/min fps, etc
-- Should the image_to_movie function echo out the settings it is using? (Yes?)
-- Image/directory filename sanitation (doesn't begin with -, doesn't include ../, ...)
-- The option to supply/read-in different settings for a single run (first do the settings and checks and hints for max/min video dimensions, max/min fps, etc)
-- Add an exit trap as per https://news.ycombinator.com/item?id=36400465 and [linked article](http://redsymbol.net/articles/bash-exit-traps/)
-
-Then tidy/refactor/check
-- Make an error printing function to standardise those https://google.github.io/styleguide/shellguide.html#stdout-vs-stderr
-- Refactor if needed e.g. option for overriding some of the default settings in the .env file (have certain settings at the top as readonly, other settings are set in the main file but could be overwritten when the .env file is loaded further down, make it so the .env file is not strictly necessary?)

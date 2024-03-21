@@ -14,5 +14,3 @@ See [Renaming files in sequential order](https://answers.microsoft.com/en-us/win
 3. Right-click the first one and choose Rename
 4. Rename as `(10001).jpg`, and that pattern will be applied to all the files e.g. `(10002).jpg`, `(10003).jpg` and so on
 5. Copy the renamed files into the `source` folder
-
-TBD: is a filename with brackets in it going to break the Bash script.
