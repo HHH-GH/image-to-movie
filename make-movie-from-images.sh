@@ -50,6 +50,7 @@ IFS="$(printf '\n\t')"
 # Folder locations
 readonly IMG_SOURCE_DIR='./source'
 readonly IMG_OUTPUT_DIR='./output'
+readonly IMG_OUTPUT_TMP_DIR='./output/tmp'
 readonly IMG_TEST_SOURCE_DIR='./test'
 
 # Output settings
@@ -78,7 +79,7 @@ readonly IMG_PROCESSING_SATURATION="100,120,100"				# -modulate "${IMG_PROCESSIN
 # Fixed messages
 readonly PROPOSED_SOURCE_DIR_RULES='Alphanumeric, no special characters, location is in the same folder as the script.'
 
-# 4. The actual program functions TODO(HHH-GH): tidy the code
+# 4. The actual program functions
 
 #######################################
 # Print the menu options.
@@ -155,7 +156,9 @@ images_to_movie(){
 	local make_vid_output_fps=$5
 
 	# Set the temp location for the image processing
-	local make_img_output_tmp_dir="$make_img_output_dir/tmp"
+	# This is hardcoded, and so is the output dir	
+	local make_img_output_tmp_dir="${IMG_OUTPUT_TMP_DIR}"
+	#local make_img_output_tmp_dir="$make_img_output_dir/tmp"
 	
 	# Name of the output file
 	make_vid_output_filename=$( date +%Y%m%d%H%M )_"${make_vid_output_width}"w_"${make_vid_output_height}"h_"${make_vid_output_fps}"fps
@@ -330,21 +333,7 @@ images_to_movie(){
 	
 	echo -en "\n\t3/3: Cleaning up the temporary files\n"
 	
-	# Delete JPG files in tmp
-	# https://superuser.com/questions/902064/how-to-recursivly-delete-all-jpg-files-but-keep-the-ones-containing-sample
-	# https://superuser.com/questions/654416/is-the-rm-buildin-gnu-command-case-sensitive
-	# `find` in the output temp directory
-	# -maxdepth 1 only in that directory and not subdirectories
-	# Anything that matches (case-insensitive) '.jpg'
-	# Delete any matches
-	find "${make_img_output_tmp_dir}/" -maxdepth 1 -iname '*.jpg' -delete
-		
-	# Delete tmp directory if empty
-	# Because we don't want to delete everything by accident if there is tomfoolery with directory names
-	# Suppress the error message if it is not empty
-	# https://unix.stackexchange.com/questions/387048/why-does-rmdir-p-ignore-fail-on-non-empty-fail-when-encountering-home
-	rmdir -p --ignore-fail-on-non-empty "${make_img_output_tmp_dir}/"
-	
+	img_output_tmp_dir_cleanup
 	
 	# 4D.
 	# Print a success message, including the name of the movie and where it is located
@@ -425,6 +414,8 @@ function quit_program(){
 	
 	echo -en "\n\tQUITTING"
 
+	img_output_tmp_dir_cleanup
+
 	sleep .3
 	echo -en "."
 	sleep .3
@@ -434,6 +425,38 @@ function quit_program(){
 	sleep .3
 	
 }
+
+#######################################
+# Clean up the tmp folder
+# Globals:
+#	IMG_OUTPUT_TMP_DIR
+# Arguments:
+#	None
+#######################################
+function img_output_tmp_dir_cleanup(){
+	# Delete JPG files in IMG_OUTPUT_TMP_DIR
+	# https://superuser.com/questions/902064/how-to-recursivly-delete-all-jpg-files-but-keep-the-ones-containing-sample
+	# https://superuser.com/questions/654416/is-the-rm-buildin-gnu-command-case-sensitive
+	
+	
+	# is there a tmp directory?
+	if [[ -d "$IMG_OUTPUT_TMP_DIR" ]]; then
+        # Delete JPG files in IMG_OUTPUT_TMP_DIR
+		# `find` in the output temp directory
+		# -maxdepth 1 only in that directory and not subdirectories
+		# Anything that matches (case-insensitive) '.jpg'
+		# Delete any matches
+        find "${IMG_OUTPUT_TMP_DIR}/" -maxdepth 1 -iname '*.jpg' -delete
+
+        # Delete tmp directory if empty
+		# Because we don't want to delete everything by accident if there is tomfoolery with directory names
+		# Suppress the error message if it is not empty
+		# https://unix.stackexchange.com/questions/387048/why-does-rmdir-p-ignore-fail-on-non-empty-fail-when-encountering-home
+        rmdir -p --ignore-fail-on-non-empty "${IMG_OUTPUT_TMP_DIR}/"    
+    fi
+
+}
+
 
 #######################################
 # Validate a custom photos folder location
@@ -609,6 +632,22 @@ function main(){
 	
 	done
 }
+
+
+#######################################
+# Clean up on exit
+# Globals:
+#	None
+# Arguments:
+#	None
+# Reference
+#   http://redsymbol.net/articles/bash-exit-traps/
+#######################################
+function finish {
+  # clean up the tmp folder
+  img_output_tmp_dir_cleanup
+}
+trap finish EXIT
 
 
 # Run the program
