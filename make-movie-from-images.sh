@@ -154,30 +154,20 @@ images_to_movie(){
 	local make_vid_output_height=$4
 	local make_vid_output_fps=$5
 
-	# TODO(HHH-GH): Check the width/height/fps are in allowed range
-	# TODO(HHH-GH): Check the directories are allowed (start with ./, no ../ in the file names)
-	# Ref: the about Safely Handling pathnames and filenames in 
-	# shell https://dwheeler.com/essays/filenames-in-shell.html
-	
-
 	# Set the temp location for the image processing
 	local make_img_output_tmp_dir="$make_img_output_dir/tmp"
 	
 	# Name of the output file
 	make_vid_output_filename=$( date +%Y%m%d%H%M )_"${make_vid_output_width}"w_"${make_vid_output_height}"h_"${make_vid_output_fps}"fps
 
-	# First test - echo out the variables
-	# TODO(HHH-GH): replace this with a message about the image to movie process and what's about to happen
+	# What's happening next
+	echo -e "\n\tYour movie is being made with the following settings. Please wait until the script completes.\n"
 	echo -e "\tImages source directory: ......... '${make_img_src_dir}'"
 	echo -e "\tMovie output directory: .......... '${make_img_output_dir}'"
 	echo -e "\tOutput temporary directory: ...... '${make_img_output_tmp_dir}'"
 	echo -e "\tMovie output width: .............. '${make_vid_output_width}'"
 	echo -e "\tMovie output height: ............. '${make_vid_output_height}'"
 	echo -e "\tMovie output frames per second: .. '${make_vid_output_fps}'\n"
-	
-	# TODO(HHH-GH): everything under here, including the 
-	# part about Safely Handling pathnames and filenames in 
-	# shell https://dwheeler.com/essays/filenames-in-shell.html 
 	
 	# Look for files in make_img_src_dir and then 
 	# 4A. Loop through, resize/etc, save to the tmp location
@@ -197,7 +187,7 @@ images_to_movie(){
 	# or something like that
 		
 	# A status message
-	echo -en "\n\t1/3: Resizing images\n"
+	echo -en "\n\n\t1/3: Resizing images\n"
 	
 	# Get all the jpgs	
 	# This gets the file name of the image, without the folder name
@@ -216,12 +206,6 @@ images_to_movie(){
 	# Loop through img_arr and process the files	
 	local i=1
 	for infile in ${img_arr[*]}; do
-		
-		# TODO(HHH-GH): check that the file name doesn't start with -
-		# (Or it will be interpreted as an argument in the image magick function)
-		# Ref: the part about Safely Handling pathnames and filenames in 
-		# shell https://dwheeler.com/essays/filenames-in-shell.html
-		# Log any files that are skipped? e.g. X files skipped due to weirdo file names
 		
 		# An indent for the dots, and the first dot
 		if [[ ${i} -eq 1 ]]; then
@@ -279,9 +263,7 @@ images_to_movie(){
 		
 	
 	# 4B.
-	# Make a movie from those files using make_vid_output_fps
-	# Note: don't need to check filenames as above, those won't have been output?
-	# TODO(HHH-GH): but check just in case?
+	# Make a movie from those files using make_vid_output_fps		
 	
 	echo -en "\n\t2/3: Turning the images into a movie\n"
 	
@@ -453,6 +435,48 @@ function quit_program(){
 	
 }
 
+#######################################
+# Validate a custom photos folder location
+# Globals:
+#	None
+# Arguments:
+#	the folder name
+#######################################
+
+validate_folder_name() {
+    local folder_name="$1"
+
+    # Check if folder name is empty
+    if [ -z "$folder_name" ]; then
+        echo -e "\tError: Folder name cannot be empty."
+        return 1
+    fi
+
+    # Check for special characters, spaces, or non-alphanumeric characters
+	# Check if folder name contains whitespace characters
+	if [[ "$folder_name" =~ [[:space:]] ]]; then
+		echo -e "\tError: Folder name contains whitespace characters."
+		return 1
+	fi
+
+	# Check if folder name matches the regular expression pattern
+	if [[ ! "$folder_name" =~ ^(\./[^./]+[./a-zA-Z0-9_-]*)$ ]]; then
+		echo -e "\tError: Folder name does not match the expected pattern."
+		return 1
+	fi
+
+	# Get the directory path of the entered folder
+	local folder_dir=$(realpath "$folder_name")
+
+	# Check if folder exists
+	if [ ! -d "$folder_dir" ]; then
+		echo -e "\tError: Folder does not exist."
+		return 1
+	fi
+
+    return 0
+}
+
 
 # The workings of the program are wrapped in a main function
 function main(){
@@ -487,14 +511,7 @@ function main(){
 		elif [[ "${menu_input}" == "o" ]]; then
 		
 			echo -e "\n\tMaking movie from images with options to override defaults"
-			
-			# TODO(HHH-GH): make this so you can choose to use the default or override them
-			# here's the basic way to read input and fallback to default if nothing is entered
-			# Ask for X, or use default value
-			# echo "Enter path to source directory, or hit Enter to keep default value '${IMG_SOURCE_DIR}': "
-			# read make_img_src_dir
-			#make_img_src_dir=${make_img_src_dir:-${IMG_SOURCE_DIR}}
-			
+						
 			# Assign the defaults to variables
 			local make_img_src_dir=${IMG_SOURCE_DIR}
 			# local make_img_output_dir=${IMG_OUTPUT_DIR} # no this is fixed
@@ -526,7 +543,7 @@ function main(){
 			echo -e "\n\tEnter FPS of video (max ${VID_OUTPUT_FPS_MAX}, min ${VID_OUTPUT_FPS_MIN}), or hit Enter to keep default value '${VID_OUTPUT_FPS}'\t"			
 			read -p "Enter custom FPS of video: " proposed_vid_output_fps
 			# prefix the new folder name with ./
-			make_vid_output_fps=${proposed_vid_output_fps:-${VID_OUTPUT_WIDTH}}
+			make_vid_output_fps=${proposed_vid_output_fps:-${VID_OUTPUT_FPS}}
 
 
 
@@ -534,31 +551,36 @@ function main(){
 			# set this to n if any tests fail
 			local continue_processing='y'
 
+			# Validate custom folder name
+			if ! validate_folder_name "$make_img_src_dir"; then
+    			#echo -e "\n\tError: Invalid folder name" # error messages output by the validate_folder_name function
+    			continue_processing='n'
+			fi
 
-			
-			# TODO(HHH-GH): some checks to make sure the provided options are not ridiculous
-			# Do these checks in the image_to_movie function to avoid duplication
-			# e.g. the width and height aren't above Xpx
-			# e.g. the fps isn't like 0.0000001fps 
-			# Set those as constants i.e MAX_FPS MAX_VID_OUTPUT_WIDTH
-			# return if no good
+			# Validate custom video width
+			if [[ ! $make_vid_output_width =~ ^[0-9]+$ || $make_vid_output_width -gt VID_OUTPUT_WIDTH_MAX || $make_vid_output_width -lt VID_OUTPUT_WIDTH_MIN ]]; then
+				echo -e "\n\tError: Invalid value for video width: Must be a number between $VID_OUTPUT_WIDTH_MIN and $VID_OUTPUT_WIDTH_MAX"
+				continue_processing='n'
+			fi
+
+			# Validate custom video height
+			if [[ ! $make_vid_output_height =~ ^[0-9]+$ || $make_vid_output_height -gt VID_OUTPUT_HEIGHT_MAX || $make_vid_output_height -lt VID_OUTPUT_HEIGHT_MIN ]]; then
+				echo -e "\n\tError: Invalid value for video height: Must be a number between $VID_OUTPUT_HEIGHT_MIN and $VID_OUTPUT_HEIGHT_MAX"
+				continue_processing='n'
+			fi
+
+			# Validate custom video FPS
+			if [[ ! $make_vid_output_fps =~ ^[0-9]+$ || $make_vid_output_fps -gt VID_OUTPUT_FPS_MAX || $make_vid_output_fps -lt VID_OUTPUT_FPS_MIN ]]; then
+				echo -e "\n\tError: Invalid value for video FPS: Must be a number between $VID_OUTPUT_FPS_MIN and $VID_OUTPUT_FPS_MAX"
+				continue_processing='n'
+			fi
 			
 
 			if [[ "${continue_processing}" == "y" ]]; then
 				# Call the make movie function, passing in those variables			
-				#images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
-				echo -e "\n\tMade the movie"
+				images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
+				#echo -e "\n\tMade the movie"
 			fi
-
-			echo -e "\n\tWould have run script with these values\n"
-			echo -e "\t~~~~~~~~~~~~~~~~~~~~~~~~\n"
-			echo -e "\tImages source directory: ........ '${make_img_src_dir}'"
-			echo -e "\tMovie output directory: ......... '${IMG_OUTPUT_DIR}'"
-			echo -e "\tMovie output width: .............. '${make_vid_output_width}'"
-			echo -e "\tMovie output height: ............. '${make_vid_output_height}'"
-			echo -e "\tMovie output frames per second: .. '${make_vid_output_fps}'\n"
-			
-			echo -e "\n\tTODO: finish this"
 		
 		elif [[ "${menu_input}" == "v" ]]; then
 		
