@@ -190,7 +190,8 @@ images_to_movie(){
 	# or something like that
 		
 	# A status message
-	echo -en "\n\n\t1/3: Resizing images\n"
+	echo -en "\n\n\t1/3: Resizing images ($(date +'%r, %B %d'))\n"
+
 	
 	# Get all the jpgs	
 	# This gets the file name of the image, without the folder name
@@ -268,7 +269,7 @@ images_to_movie(){
 	# 4B.
 	# Make a movie from those files using make_vid_output_fps		
 	
-	echo -en "\n\t2/3: Turning the images into a movie\n"
+	echo -en "\n\t2/3: Turning the images into a movie ($(date +'%r, %B %d'))\n"
 	
 	# Are there any processed images to turn into a movie?
 	local processed_img_arr=(`ls ${make_img_output_tmp_dir} | grep -i '\.jpg'`)
@@ -331,14 +332,14 @@ images_to_movie(){
 	# Delete make_img_output_tmp_dir and the files inside
 	# Delete only JPG files, then delete the folder only if it is empty
 	
-	echo -en "\n\t3/3: Cleaning up the temporary files\n"
+	echo -en "\n\t3/3: Cleaning up the temporary files ($(date +'%r, %B %d'))\n"
 	
 	img_output_tmp_dir_cleanup
 	
 	# 4D.
 	# Print a success message, including the name of the movie and where it is located
 	
-	echo -en '\n\tFinished!\n'
+	echo -en '\n\tFinished! ($(date +'%r, %B %d'))\n'
 	echo -en "\n\tMovie saved as '${make_vid_output_filename}.mp4' in '${make_img_output_dir}'\n"
 	
 	# Last variable to cleanup
@@ -602,8 +603,7 @@ function main(){
 
 			if [[ "${continue_processing}" == "y" ]]; then
 				# Call the make movie function, passing in those variables			
-				#images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
-				echo -e "\n\tMade the movie"
+				images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}				
 			fi
 		
 		elif [[ "${menu_input}" == "v" ]]; then
