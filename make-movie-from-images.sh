@@ -56,7 +56,7 @@ readonly IMG_TEST_SOURCE_DIR='./test'
 # Output settings
 readonly VID_OUTPUT_WIDTH='720' 
 readonly VID_OUTPUT_HEIGHT='720'
-readonly VID_OUTPUT_FPS='24'
+readonly VID_OUTPUT_FPS='8' # fps of 8-12 works good for for combining photos, 24 is too fast.
 readonly VID_TEST_OUTPUT_FPS='2'
 
 # Max/min for output settings that are customised
