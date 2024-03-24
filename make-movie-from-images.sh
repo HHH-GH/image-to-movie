@@ -339,7 +339,7 @@ images_to_movie(){
 	# 4D.
 	# Print a success message, including the name of the movie and where it is located
 	
-	echo -en '\n\tFinished! ($(date +'%r, %B %d'))\n'
+	echo -en "\n\tFinished! ($(date +'%r, %B %d'))\n"
 	echo -en "\n\tMovie saved as '${make_vid_output_filename}.mp4' in '${make_img_output_dir}'\n"
 	
 	# Last variable to cleanup
