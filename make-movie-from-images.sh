@@ -468,7 +468,7 @@ function img_output_tmp_dir_cleanup(){
 
 validate_folder_name() {
     local folder_name="$1"
-
+	
     # Check if folder name is empty
     if [ -z "$folder_name" ]; then
         echo -e "\tError: Folder name cannot be empty."
@@ -546,26 +546,27 @@ function main(){
 			# Source directory of images to process
 			echo -e "\n\tEnter path to custom image source directory, or hit Enter to keep default value '${IMG_SOURCE_DIR}'"
 			echo -e "\n\tShould be ${PROPOSED_SOURCE_DIR_RULES}\n\t"
-			read -p "Enter custom image source directory: " proposed_img_source_dir
-			# prefix the new folder name with ./
-			make_img_src_dir="./"${proposed_img_source_dir:-${IMG_SOURCE_DIR}}
+			read -p "Enter custom image source directory: " proposed_img_source_dir			
+			make_img_src_dir=${proposed_img_source_dir:-${IMG_SOURCE_DIR}}
+			# make sure make_img_src_dir is prefixed with a ./
+			if [[ $make_img_src_dir != ./* ]]; then
+				# If not, prepend './' to proposed_img_source_dir
+				make_img_src_dir="./${make_img_src_dir}"
+			fi			
 			
 			# Width of output video
 			echo -e "\n\tEnter width of video (max ${VID_OUTPUT_WIDTH_MAX}, min ${VID_OUTPUT_WIDTH_MIN}), or hit Enter to keep default value '${VID_OUTPUT_WIDTH}'\t"			
-			read -p "Enter custom width of video: " proposed_vid_output_width
-			# prefix the new folder name with ./
+			read -p "Enter custom width of video: " proposed_vid_output_width			
 			make_vid_output_width=${proposed_vid_output_width:-${VID_OUTPUT_WIDTH}}
 
 			# Height of output video
 			echo -e "\n\tEnter height of video (max ${VID_OUTPUT_HEIGHT_MAX}, min ${VID_OUTPUT_HEIGHT_MIN}), or hit Enter to keep default value '${VID_OUTPUT_WIDTH}'\t"			
-			read -p "Enter custom height of video: " proposed_vid_output_height
-			# prefix the new folder name with ./
+			read -p "Enter custom height of video: " proposed_vid_output_height			
 			make_vid_output_height=${proposed_vid_output_height:-${VID_OUTPUT_WIDTH}}
 
 			# FPS of output video
 			echo -e "\n\tEnter FPS of video (max ${VID_OUTPUT_FPS_MAX}, min ${VID_OUTPUT_FPS_MIN}), or hit Enter to keep default value '${VID_OUTPUT_FPS}'\t"			
 			read -p "Enter custom FPS of video: " proposed_vid_output_fps
-			# prefix the new folder name with ./
 			make_vid_output_fps=${proposed_vid_output_fps:-${VID_OUTPUT_FPS}}
 
 
@@ -601,8 +602,7 @@ function main(){
 
 			if [[ "${continue_processing}" == "y" ]]; then
 				# Call the make movie function, passing in those variables			
-				images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}
-				#echo -e "\n\tMade the movie"
+				images_to_movie ${make_img_src_dir} ${IMG_OUTPUT_DIR} ${make_vid_output_width} ${make_vid_output_height} ${make_vid_output_fps}				
 			fi
 		
 		elif [[ "${menu_input}" == "v" ]]; then
